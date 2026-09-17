@@ -27,33 +27,28 @@
   :focus{ outline:none; }
   :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 
-  .glass{
-    background:rgba(20,20,20,.55);
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-    border:1px solid rgba(255,255,255,.08);
-  }
-
-  /* ---------- icon button (the fix) ---------- */
+  /* ---------- icon button (matches profile.html) ---------- */
   .icon-btn{
-    width:40px; height:40px;
+    width:38px; height:38px;
     border-radius:50%;
-    display:grid;
-    place-items:center;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.4);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
     cursor:pointer;
     -webkit-user-select:none; user-select:none;
+    overflow:hidden;
     transition:background .15s ease, transform .12s ease;
   }
+  .icon-btn:hover{ background:rgba(0,0,0,.55); }
+  .icon-btn:active{ transform:scale(.94); }
   .icon-btn img{
-    width:20px; height:20px;
+    width:18px; height:18px;
     display:block;
     object-fit:contain;
     pointer-events:none;
-    transition:transform .12s ease, opacity .12s ease;
   }
-  .icon-btn.glass:hover{ background:rgba(40,40,40,.75); }
-  .icon-btn:active{ transform:scale(.94); }
-  .icon-btn:active img{ transform:scale(.96); }
 
   /* ---------- wallpaper ---------- */
   .wallpaper-wrap{
@@ -72,12 +67,12 @@
     position:absolute; top:0; left:0; right:0;
     display:flex; align-items:center; justify-content:flex-end;
     gap:10px;
-    padding:16px;
+    padding:18px 16px;
     z-index:5;
   }
   .dropdown{
     position:absolute;
-    top:52px; right:16px;
+    top:46px; right:16px;
     background:rgba(20,20,20,.55);
     backdrop-filter:blur(28px);
     -webkit-backdrop-filter:blur(28px);
@@ -234,9 +229,9 @@
   <img src="assets/college.png" alt="">
   <div class="wallpaper-fade"></div>
   <div class="wallpaper-topbar">
-    <div class="icon-btn glass" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
+    <div class="icon-btn" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
     <div style="position:relative;">
-      <div class="icon-btn glass" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
+      <div class="icon-btn" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
       <div class="dropdown" id="dropdown">
         <div class="dropdown-item" onclick="onShareClick()"><i class="fa-solid fa-share-nodes"></i>Share</div>
         <div class="dropdown-item" onclick="onDeveloperClick()"><i class="fa-solid fa-code"></i>Developer</div>
@@ -252,7 +247,7 @@
 </div>
 
 <div class="overlay" id="shareOverlay">
-  <div class="overlay-topbar"><div class="icon-btn glass" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
+  <div class="overlay-topbar"><div class="icon-btn" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
   <div class="share-card">
     <div class="share-title">Share this page</div>
     <div class="share-link-row"><span id="shareUrlText"></span><button class="copy-btn" onclick="copyShareLink()">Copy</button></div>
