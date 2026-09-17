@@ -33,14 +33,27 @@
     -webkit-backdrop-filter:blur(24px);
     border:1px solid rgba(255,255,255,.08);
   }
+
+  /* ---------- icon button (the fix) ---------- */
   .icon-btn{
     width:40px; height:40px;
     border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
+    display:grid;
+    place-items:center;
     cursor:pointer;
     -webkit-user-select:none; user-select:none;
+    transition:background .15s ease, transform .12s ease;
   }
-  .icon-btn img{ width:18px; height:18px; pointer-events:none; }
+  .icon-btn img{
+    width:20px; height:20px;
+    display:block;
+    object-fit:contain;
+    pointer-events:none;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .icon-btn.glass:hover{ background:rgba(40,40,40,.75); }
+  .icon-btn:active{ transform:scale(.94); }
+  .icon-btn:active img{ transform:scale(.96); }
 
   /* ---------- wallpaper ---------- */
   .wallpaper-wrap{
