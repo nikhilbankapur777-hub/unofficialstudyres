@@ -27,56 +27,44 @@
   :focus{ outline:none; }
   :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 
-  /* === icon-btn — same as profile.html, icon shrunk to 14px === */
+  .glass{
+    background:rgba(20,20,20,.55);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border:1px solid rgba(255,255,255,.08);
+  }
   .icon-btn{
-    width:38px; height:38px;
+    width:40px; height:40px;
     border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    background:rgba(0,0,0,.4);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.08);
     cursor:pointer;
     -webkit-user-select:none; user-select:none;
-    overflow:hidden;
   }
-  .icon-btn:active{ background:rgba(0,0,0,.55); }
-  .icon-btn img{ width:14px; height:14px; pointer-events:none; }
+  .icon-btn img{ width:18px; height:18px; pointer-events:none; }
 
-  /* === topbar — same as profile.html === */
-  .topbar{
-    position:absolute;
-    top:0; left:0; right:0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:18px 16px;
-    z-index:5;
-  }
-  .topbar-right{ display:flex; align-items:center; gap:10px; position:relative; }
-
-  /* === wallpaper — same as profile.html (230px) === */
+  /* ---------- wallpaper ---------- */
   .wallpaper-wrap{
     position:relative;
-    height:230px;
     width:100%;
+    aspect-ratio:16/9;
     overflow:hidden;
     background:#111;
   }
-  .wallpaper-wrap img{
-    width:100%; height:100%;
-    object-fit:cover;
-    display:block;
-  }
+  .wallpaper-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
   .wallpaper-fade{
-    position:absolute;
-    inset:0;
+    position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(0,0,0,0) 55%, var(--bg) 100%);
   }
-
+  .wallpaper-topbar{
+    position:absolute; top:0; left:0; right:0;
+    display:flex; align-items:center; justify-content:flex-end;
+    gap:10px;
+    padding:16px;
+    z-index:5;
+  }
   .dropdown{
     position:absolute;
-    top:46px; right:0;
+    top:52px; right:16px;
     background:rgba(20,20,20,.55);
     backdrop-filter:blur(28px);
     -webkit-backdrop-filter:blur(28px);
@@ -232,11 +220,10 @@
 <div class="wallpaper-wrap">
   <img src="assets/college.png" alt="">
   <div class="wallpaper-fade"></div>
-  <div class="topbar">
-    <div></div>
-    <div class="topbar-right">
-      <div class="icon-btn" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
-      <div class="icon-btn" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
+  <div class="wallpaper-topbar">
+    <div class="icon-btn glass" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
+    <div style="position:relative;">
+      <div class="icon-btn glass" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
       <div class="dropdown" id="dropdown">
         <div class="dropdown-item" onclick="onShareClick()"><i class="fa-solid fa-share-nodes"></i>Share</div>
         <div class="dropdown-item" onclick="onDeveloperClick()"><i class="fa-solid fa-code"></i>Developer</div>
@@ -252,7 +239,7 @@
 </div>
 
 <div class="overlay" id="shareOverlay">
-  <div class="overlay-topbar"><div class="icon-btn" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
+  <div class="overlay-topbar"><div class="icon-btn glass" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
   <div class="share-card">
     <div class="share-title">Share this page</div>
     <div class="share-link-row"><span id="shareUrlText"></span><button class="copy-btn" onclick="copyShareLink()">Copy</button></div>
@@ -313,12 +300,14 @@
     window.location.href = 'subject.html?subject=' + encodeURIComponent(key);
   }
 
+  /* ---------- ai button ---------- */
   function onAiClick(){
     var t = document.getElementById('toast');
     t.classList.add('show');
     setTimeout(function(){ t.classList.remove('show'); }, 1800);
   }
 
+  /* ---------- dropdown ---------- */
   function toggleMenu(e){
     if(e) e.stopPropagation();
     document.getElementById('dropdown').classList.toggle('open');
@@ -336,6 +325,7 @@
     window.location.href = 'https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx';
   }
 
+  /* ---------- overlay stack (back-button aware) ---------- */
   function openOverlayEl(name){
     document.getElementById('dropdown').classList.remove('open');
     openOverlayName = name;
@@ -353,6 +343,7 @@
     }
   });
 
+  /* ---------- share ---------- */
   function onShareClick(){
     document.getElementById('dropdown').classList.remove('open');
     var url = window.location.href;
@@ -400,6 +391,7 @@
     }
   }
 
+  /* ---------- boot ---------- */
   fetchJson(['assets/subjects.json', 'subjects.json']).then(function(data){
     renderSubjects(data);
   }).catch(function(){
