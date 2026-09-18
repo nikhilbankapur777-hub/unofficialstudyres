@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Subject — Study Resources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  :root{
+    --bg:#000;
+    --card:#0a0a0a;
+    --border:#1a1a1a;
+    --accent:#007aff;
+    --muted:#666;
+    --text:#f2f2f2;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Space Grotesk", sans-serif;
+    min-height:100vh;
+  }
+  a{ color:inherit; text-decoration:none; }
+  :focus{ outline:none; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .glass{
+    background:rgba(20,20,20,.55);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .icon-btn{
+    width:40px; height:40px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    -webkit-user-select:none; user-select:none;
+  }
+  .icon-btn img{ width:18px; height:18px; pointer-events:none; }
+  .icon-btn i{ font-size:1rem; color:#fff; }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:linear-gradient(180deg, var(--bg) 60%, rgba(0,0,0,0) 100%);
+  }
+  .topbar-left{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .topbar-title{
+    font-size:.98rem;
+    font-weight:600;
+    color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  .page-body{ padding:6px 20px 60px; max-width:640px; margin:0 auto; }
+
+  .subject-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 0 22px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:20px;
+  }
+  .subject-header-icon{
+    width:52px; height:52px;
+    border-radius:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .subject-header-icon img{ width:28px; height:28px; }
+  .subject-header-name{ font-size:1.2rem; font-weight:700; color:#fff; }
+  .subject-header-desc{ font-size:.82rem; color:var(--muted); margin-top:3px; line-height:1.4; }
+
+  .resource-list{ display:flex; flex-direction:column; gap:12px; }
+  .resource-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:16px 18px;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .resource-btn:active{ transform:scale(.98); }
+  .resource-btn:hover{ border-color:#2a2a2a; }
+  .resource-text{ min-width:0; }
+  .resource-heading{ font-size:.92rem; font-weight:600; color:#fff; margin-bottom:3px; }
+  .resource-desc{ font-size:.78rem; color:var(--muted); line-height:1.4; }
+  .resource-arrow{ flex-shrink:0; color:var(--muted); font-size:.9rem; }
+
+  .empty-state{
+    text-align:center;
+    color:var(--muted);
+    padding:70px 20px;
+    font-size:.9rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="icon-btn glass" onclick="history.back()"><img src="assets/back.svg" alt="back"></div>
+    <span class="topbar-title" id="topbarTitle">Subject</span>
+  </div>
+  <div class="icon-btn glass" id="ytBtn"><i class="fa-brands fa-youtube"></i></div>
+</div>
+
+<div class="page-body" id="pageBody">
+  <div class="empty-state">Loading…</div>
+</div>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var subjectKey = params.get('subject');
+
+  function escapeHtml(str){
+    var d = document.createElement('div');
+    d.innerText = str;
+    return d.innerHTML;
+  }
+
+  function fetchJson(paths){
+    var path = paths[0];
+    return fetch(path).then(function(res){
+      if(!res.ok) throw new Error('not ok');
+      return res.json();
+    }).catch(function(err){
+      if(paths.length > 1) return fetchJson(paths.slice(1));
+      throw err;
+    });
+  }
+
+  function renderNotFound(msg){
+    document.getElementById('pageBody').innerHTML = '<div class="empty-state">' + msg + '</div>';
+  }
+
+  function render(subject){
+    document.getElementById('topbarTitle').textContent = subject.name || subjectKey;
+    document.getElementById('ytBtn').onclick = function(){
+      window.location.href = 'yt.html?subject=' + encodeURIComponent(subjectKey);
+    };
+
+    var resources = subject.resources || [];
+    var resourcesHtml = resources.length
+      ? resources.map(function(r){
+          return (
+            '<a class="resource-btn" href="' + r.link + '" target="_blank" rel="noopener">' +
+              '<div class="resource-text">' +
+                '<div class="resource-heading">' + escapeHtml(r.heading || '') + '</div>' +
+                '<div class="resource-desc">' + escapeHtml(r.description || '') + '</div>' +
+              '</div>' +
+              '<i class="fa-solid fa-chevron-right resource-arrow"></i>' +
+            '</a>'
+          );
+        }).join('')
+      : '<div class="empty-state">No resources yet</div>';
+
+    document.getElementById('pageBody').innerHTML =
+      '<div class="subject-header">' +
+        '<div class="subject-header-icon"><img src="' + (subject.icon || '') + '" alt=""></div>' +
+        '<div>' +
+          '<div class="subject-header-name">' + escapeHtml(subject.name || subjectKey) + '</div>' +
+          '<div class="subject-header-desc">' + escapeHtml(subject.description || '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="resource-list">' + resourcesHtml + '</div>';
+  }
+
+  if(!subjectKey){
+    renderNotFound('No subject was given in the link.');
+  } else {
+    fetchJson(['assets/subjects.json', 'subjects.json']).then(function(data){
+      var subject = data[subjectKey];
+      if(!subject){
+        renderNotFound('No subject found for "' + subjectKey + '".');
+        return;
+      }
+      if(subject.enabled === false){
+        document.getElementById('topbarTitle').textContent = subject.name || subjectKey;
+        renderNotFound('Coming soon.');
+        return;
+      }
+      render(subject);
+    }).catch(function(){
+      renderNotFound('Could not load subjects.json.');
+    });
+  }
+</script>
+</body>
+</html>
