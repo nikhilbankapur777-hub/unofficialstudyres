@@ -1,0 +1,62 @@
+{
+  "physics": {
+    "name": "Physics",
+    "description": "Mechanics, electromagnetism, waves, and modern physics notes.",
+    "icon": "assets/icons/physics.svg",
+    "resources": [
+      {
+        "heading": "Unit 1 — Mechanics",
+        "description": "Kinematics, Newton's laws, work and energy.",
+        "link": "https://example.com/physics-unit1.pdf"
+      },
+      {
+        "heading": "Unit 2 — Electromagnetism",
+        "description": "Electric fields, circuits, and magnetism.",
+        "link": "https://example.com/physics-unit2.pdf"
+      }
+    ]
+  },
+  "electronics": {
+    "name": "Electronics",
+    "description": "Circuits, semiconductors, and digital logic.",
+    "icon": "assets/icons/electronics.svg",
+    "resources": [
+      {
+        "heading": "Basic Electronics",
+        "description": "Diodes, transistors, and op-amps.",
+        "link": "https://example.com/electronics-basics.pdf"
+      }
+    ]
+  },
+  "maths": {
+    "name": "Maths",
+    "description": "Calculus, linear algebra, and probability.",
+    "icon": "assets/icons/maths.svg",
+    "resources": [
+      {
+        "heading": "Calculus I",
+        "description": "Limits, derivatives, and integrals.",
+        "link": "https://example.com/maths-calc1.pdf"
+      }
+    ]
+  },
+  "programming": {
+    "name": "Programming",
+    "description": "Data structures, algorithms, and code.",
+    "icon": "assets/icons/programming.svg",
+    "resources": [
+      {
+        "heading": "DSA Notes",
+        "description": "Arrays, linked lists, trees, and graphs.",
+        "link": "https://example.com/programming-dsa.pdf"
+      }
+    ]
+  },
+  "special": {
+    "name": "Special",
+    "description": "Coming soon.",
+    "icon": "assets/icons/special.svg",
+    "enabled": false,
+    "resources": []
+  }
+}
