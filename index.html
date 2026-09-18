@@ -34,12 +34,18 @@
     border:1px solid rgba(255,255,255,.08);
   }
   .icon-btn{
-    width:40px; height:40px;
+    width:38px; height:38px;
     border-radius:50%;
     display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.4);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
     cursor:pointer;
     -webkit-user-select:none; user-select:none;
+    overflow:hidden;
   }
+  .icon-btn:active{ background:rgba(0,0,0,.55); }
   .icon-btn img{ width:18px; height:18px; pointer-events:none; }
 
   /* ---------- wallpaper ---------- */
@@ -221,9 +227,9 @@
   <img src="assets/college.png" alt="">
   <div class="wallpaper-fade"></div>
   <div class="wallpaper-topbar">
-    <div class="icon-btn glass" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
+    <div class="icon-btn" id="aiBtn" onclick="onAiClick()"><img src="assets/ai.svg" alt="ai"></div>
     <div style="position:relative;">
-      <div class="icon-btn glass" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
+      <div class="icon-btn" id="moreBtn" onclick="toggleMenu(event)"><img src="assets/threedot.svg" alt="more"></div>
       <div class="dropdown" id="dropdown">
         <div class="dropdown-item" onclick="onShareClick()"><i class="fa-solid fa-share-nodes"></i>Share</div>
         <div class="dropdown-item" onclick="onDeveloperClick()"><i class="fa-solid fa-code"></i>Developer</div>
@@ -239,7 +245,7 @@
 </div>
 
 <div class="overlay" id="shareOverlay">
-  <div class="overlay-topbar"><div class="icon-btn glass" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
+  <div class="overlay-topbar"><div class="icon-btn" onclick="closeOverlay()"><img src="assets/back.svg" alt="back"></div></div>
   <div class="share-card">
     <div class="share-title">Share this page</div>
     <div class="share-link-row"><span id="shareUrlText"></span><button class="copy-btn" onclick="copyShareLink()">Copy</button></div>
