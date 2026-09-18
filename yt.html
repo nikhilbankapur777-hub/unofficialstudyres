@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Videos — Study Resources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  :root{
+    --bg:#000;
+    --card:#0a0a0a;
+    --border:#1a1a1a;
+    --accent:#007aff;
+    --muted:#666;
+    --text:#f2f2f2;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Space Grotesk", sans-serif;
+    min-height:100vh;
+  }
+  a{ color:inherit; text-decoration:none; }
+  :focus{ outline:none; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .glass{
+    background:rgba(20,20,20,.55);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .icon-btn{
+    width:40px; height:40px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    -webkit-user-select:none; user-select:none;
+  }
+  .icon-btn img{ width:18px; height:18px; pointer-events:none; }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:linear-gradient(180deg, var(--bg) 60%, rgba(0,0,0,0) 100%);
+  }
+  .topbar-title{
+    font-size:.98rem;
+    font-weight:600;
+    color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  .page-body{ padding:6px 20px 60px; max-width:640px; margin:0 auto; }
+
+  .video-list{ display:flex; flex-direction:column; gap:16px; }
+  .video-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .video-card:active{ transform:scale(.99); }
+  .video-card:hover{ border-color:#2a2a2a; }
+
+  .video-thumb-wrap{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:#111;
+    overflow:hidden;
+  }
+  .video-thumb-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .video-thumb-placeholder{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, #1a1a1a, #0a0a0a);
+    color:var(--muted);
+    font-size:1.6rem;
+  }
+  .play-badge{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.15);
+  }
+  .play-badge i{
+    width:44px; height:44px;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem;
+  }
+  .playlist-tag{
+    position:absolute;
+    top:10px; right:10px;
+    font-size:.66rem;
+    font-weight:600;
+    letter-spacing:.03em;
+    color:#fff;
+    background:rgba(0,0,0,.65);
+    padding:4px 9px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .playlist-tag i{ font-size:.68rem; }
+
+  .video-meta{ padding:14px 16px 16px; }
+  .video-title{ font-size:.92rem; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.35; }
+  .video-desc{ font-size:.78rem; color:var(--muted); line-height:1.4; }
+
+  .empty-state{
+    text-align:center;
+    color:var(--muted);
+    padding:70px 20px;
+    font-size:.9rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="icon-btn glass" onclick="history.back()"><img src="assets/back.svg" alt="back"></div>
+  <span class="topbar-title" id="topbarTitle">Videos</span>
+</div>
+
+<div class="page-body" id="pageBody">
+  <div class="empty-state">Loading…</div>
+</div>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var subjectKey = params.get('subject');
+
+  function escapeHtml(str){
+    var d = document.createElement('div');
+    d.innerText = str;
+    return d.innerHTML;
+  }
+
+  function fetchJson(paths){
+    var path = paths[0];
+    return fetch(path).then(function(res){
+      if(!res.ok) throw new Error('not ok');
+      return res.json();
+    }).catch(function(err){
+      if(paths.length > 1) return fetchJson(paths.slice(1));
+      throw err;
+    });
+  }
+
+  function renderNotFound(msg){
+    document.getElementById('pageBody').innerHTML = '<div class="empty-state">' + msg + '</div>';
+  }
+
+  /* Pulls a thumbnail straight from YouTube's own image CDN — no API key
+     needed. Works for a plain video link, a youtu.be short link, or a
+     "watch?v=...&list=..." link (a playlist starting at a specific video).
+     A bare playlist link (list= with no v=) has no video id to derive a
+     thumbnail from, so it falls back to entry.thumbnail if the JSON
+     supplies one, or a plain placeholder otherwise. */
+  function parseYoutube(link, explicitThumbnail){
+    var isPlaylist = link.indexOf('list=') !== -1;
+    var videoId = null;
+
+    var vMatch = link.match(/[?&]v=([^&]+)/);
+    if(vMatch){
+      videoId = vMatch[1];
+    } else {
+      var shortMatch = link.match(/youtu\.be\/([^?&]+)/);
+      if(shortMatch) videoId = shortMatch[1];
+      var shortsMatch = link.match(/\/shorts\/([^?&]+)/);
+      if(shortsMatch) videoId = shortsMatch[1];
+    }
+
+    var thumbnail = videoId
+      ? 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg'
+      : (explicitThumbnail || null);
+
+    return { isPlaylist: isPlaylist, thumbnail: thumbnail };
+  }
+
+  function render(videos){
+    if(!videos.length){
+      renderNotFound('No videos yet');
+      return;
+    }
+
+    document.getElementById('pageBody').innerHTML =
+      '<div class="video-list">' + videos.map(function(v){
+        var meta = parseYoutube(v.link, v.thumbnail);
+        var thumbHtml = meta.thumbnail
+          ? '<img src="' + meta.thumbnail + '" alt="">'
+          : '<div class="video-thumb-placeholder"><i class="fa-brands fa-youtube"></i></div>';
+        var playlistTag = meta.isPlaylist
+          ? '<div class="playlist-tag"><i class="fa-solid fa-list"></i>Playlist</div>'
+          : '';
+
+        return (
+          '<a class="video-card" href="' + v.link + '" target="_blank" rel="noopener">' +
+            '<div class="video-thumb-wrap">' +
+              thumbHtml +
+              '<div class="play-badge"><i class="fa-solid fa-play"></i></div>' +
+              playlistTag +
+            '</div>' +
+            '<div class="video-meta">' +
+              '<div class="video-title">' + escapeHtml(v.title || '') + '</div>' +
+              '<div class="video-desc">' + escapeHtml(v.description || '') + '</div>' +
+            '</div>' +
+          '</a>'
+        );
+      }).join('') + '</div>';
+  }
+
+  if(!subjectKey){
+    renderNotFound('No subject was given in the link.');
+  } else {
+    Promise.all([
+      fetchJson(['assets/subjects.json', 'subjects.json']).catch(function(){ return {}; }),
+      fetchJson(['assets/yt.json', 'yt.json'])
+    ]).then(function(results){
+      var subjects = results[0];
+      var ytData = results[1];
+      var subjectName = (subjects[subjectKey] && subjects[subjectKey].name) || subjectKey;
+      document.getElementById('topbarTitle').textContent = subjectName + ' Videos';
+
+      var videos = ytData[subjectKey] || [];
+      render(videos);
+    }).catch(function(){
+      renderNotFound('Could not load yt.json.');
+    });
+  }
+</script>
+</body>
+</html>
