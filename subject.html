@@ -43,6 +43,12 @@
   .icon-btn img{ width:18px; height:18px; pointer-events:none; }
   .icon-btn i{ font-size:1rem; color:#fff; }
 
+  .dev-btn{
+    width:auto; border-radius:20px; padding:0 14px 0 12px; gap:7px;
+  }
+  .dev-btn i{ font-size:.85rem; }
+  .dev-btn span{ font-size:.8rem; font-weight:600; color:#fff; white-space:nowrap; }
+
   .topbar{
     display:flex;
     align-items:center;
@@ -54,6 +60,7 @@
     background:linear-gradient(180deg, var(--bg) 60%, rgba(0,0,0,0) 100%);
   }
   .topbar-left{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .topbar-right{ display:flex; align-items:center; gap:8px; }
   .topbar-title{
     font-size:.98rem;
     font-weight:600;
@@ -118,7 +125,10 @@
     <div class="icon-btn glass" onclick="history.back()"><img src="assets/back.svg" alt="back"></div>
     <span class="topbar-title" id="topbarTitle">Subject</span>
   </div>
-  <div class="icon-btn glass" id="ytBtn"><i class="fa-brands fa-youtube"></i></div>
+  <div class="topbar-right">
+    <div class="icon-btn glass dev-btn" id="devBtn" onclick="onDeveloperClick()"><i class="fa-solid fa-code"></i><span>Developer</span></div>
+    <div class="icon-btn glass" id="ytBtn"><i class="fa-brands fa-youtube"></i></div>
+  </div>
 </div>
 
 <div class="page-body" id="pageBody">
@@ -144,6 +154,10 @@
       if(paths.length > 1) return fetchJson(paths.slice(1));
       throw err;
     });
+  }
+
+  function onDeveloperClick(){
+    window.location.href = 'https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx';
   }
 
   function renderNotFound(msg){
