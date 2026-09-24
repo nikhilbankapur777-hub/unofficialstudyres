@@ -1,8 +1,9 @@
 {
   "physics": {
     "name": "Physics",
-    "description": "Mechanics, electromagnetism, waves, and modern physics notes.",
+    "description": "coming soon",
     "icon": "assets/icons/physics.svg",
+    "enabled": false,
     "resources": [
       {
         "heading": "Unit 1 — Mechanics",
