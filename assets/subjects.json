@@ -19,8 +19,9 @@
   },
   "electronics": {
     "name": "Electronics",
-    "description": "Circuits, semiconductors, and digital logic.",
+    "description": "coming soon",
     "icon": "assets/icons/electronics.svg",
+    "enabled": false,
     "resources": [
       {
         "heading": "Basic Electronics",
@@ -31,7 +32,7 @@
   },
   "maths": {
     "name": "Maths",
-    "description": "Calculus, linear algebra, and probability.",
+    "description": "description anyone suggest me",
     "icon": "assets/icons/maths.svg",
     "resources": [
       {
@@ -43,8 +44,9 @@
   },
   "programming": {
     "name": "Programming",
-    "description": "Data structures, algorithms, and code.",
+    "description": "coming soon",
     "icon": "assets/icons/programming.svg",
+    "enabled": false,
     "resources": [
       {
         "heading": "DSA Notes",
