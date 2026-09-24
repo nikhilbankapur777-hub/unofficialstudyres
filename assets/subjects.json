@@ -36,9 +36,9 @@
     "icon": "assets/icons/maths.svg",
     "resources": [
       {
-        "heading": "Calculus I",
-        "description": "Limits, derivatives, and integrals.",
-        "link": "https://example.com/maths-calc1.pdf"
+        "heading": "whatever you may need today",
+        "description": "lets go",
+        "link": "Linear_Algebra_Notes.pdf"
       }
     ]
   },
