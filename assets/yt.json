@@ -1,14 +1,9 @@
 {
-  "physics": [
+  "maths": [
     {
-      "title": "Newton's Laws Explained",
-      "description": "A quick walkthrough of the three laws of motion.",
-      "link": "https://www.youtube.com/watch?v=kKKM8Y-u7ds"
-    },
-    {
-      "title": "Full Physics Playlist",
-      "description": "Complete semester playlist covering mechanics through modern physics.",
-      "link": "https://www.youtube.com/playlist?list=PLexample_physics"
+      "title": "testing",
+      "description": "upcoming feature",
+      "link": "https://www.youtube.com/"
     }
   ],
   "electronics": [
