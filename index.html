@@ -83,40 +83,36 @@
       <section class="section" id="tools" aria-labelledby="tools-title">
         <div class="section-head"><div><div class="kicker">Resources</div><h2 id="tools-title">Everything else.</h2></div></div>
         <div class="utility-grid">
-          <a class="utility" href="assets/timetable.pdf" target="_blank" rel="noopener"><div class="utility-row"><span class="round"><img class="svg" src="./calendar%3Atime/calendar_month.svg" alt=""></span><span class="quiet-link">Open →</span></div><h3>Timetable</h3><p>Class schedule — opens as a Word document.</p></a>
-          <div class="utility disabled"><div class="utility-row"><span class="round"><img class="svg" src="./forms%3Ainput/download.svg" alt=""></span></div><h3>Result Portal</h3><p>Coming soon.</p></div>
+          <a class="utility" href="assets/timetable.pdf" target="_blank" rel="noopener"><div class="utility-row"><span class="round"><img class="svg" src="assets/icons/timetable.svg" alt=""></span><span class="quiet-link">Open →</span></div><h3>Timetable</h3><p>Class schedule — opens as a Word document.</p></a>
+          <div class="utility disabled"><div class="utility-row"><span class="round"><img class="svg" src="assets/icons/result-portal.svg" alt=""></span></div><h3>Result Portal</h3><p>Coming soon.</p></div>
         </div>
       </section>
     </main>
     <footer class="footer"><span>Study Resources</span><span class="footer-links"><a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx">Developer</a></span></footer>
   </div>
-  <nav class="mobile-bar" aria-label="Mobile navigation"><a href="#top"><img class="svg" src="assets/icons/explore.svg" alt="">Home</a><a href="#subjects"><img class="svg" src="./filtering/grid_view.svg" alt="">Subjects</a><a href="#tools"><img class="svg" src="./calendar%3Atime/calendar_month.svg" alt="">Tools</a><a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx"><img class="svg" src="./forms%3Ainput/search.svg" alt="">Developer</a></nav>
+  <nav class="mobile-bar" aria-label="Mobile navigation"><a href="#top"><img class="svg" src="assets/icons/explore.svg" alt="">Home</a><a href="#subjects"><img class="svg" src="assets/icons/subjects.svg" alt="">Subjects</a><a href="#tools"><img class="svg" src="assets/icons/tools.svg" alt="">Tools</a><a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx"><img class="svg" src="assets/icons/developer.svg" alt="">Developer</a></nav>
   <div class="toast" id="toast" role="status">Community AI — coming soon</div>
   <script>
-    const SUBJECT_ORDER = ['physics', 'electronics', 'maths', 'programming', 'special'];
-    const grid = document.getElementById('subjectGrid');
-    const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
-
-    function renderSubjects(subjects) {
-      const keys = SUBJECT_ORDER.filter(key => subjects[key]).concat(Object.keys(subjects).filter(key => !SUBJECT_ORDER.includes(key)));
-      grid.innerHTML = keys.map((key, index) => {
-        const subject = subjects[key];
-        const enabled = subject.enabled !== false;
-        const classes = `subject${index === 0 ? ' featured' : ''}${enabled ? '' : ' disabled'}`;
-        const content = `<span class="subject-icon"><img class="svg" src="${escapeHtml(subject.icon)}" alt=""></span><h3>${escapeHtml(subject.name || key)}</h3><p>${escapeHtml(subject.description)}</p><span class="card-go">${enabled ? 'Explore' : 'Coming soon'} <span>→</span></span>`;
-        return enabled ? `<a class="${classes}" href="subject.html?subject=${encodeURIComponent(key)}">${content}</a>` : `<div class="${classes}" aria-disabled="true">${content}</div>`;
+    var SUBJECT_ORDER = ['physics', 'electronics', 'maths', 'programming', 'special'];
+    function escapeHtml(str){ var d = document.createElement('div'); d.innerText = str; return d.innerHTML; }
+    function fetchJson(paths){
+      var path = paths[0];
+      return fetch(path).then(function(res){ if(!res.ok) throw new Error('not ok'); return res.json(); })
+        .catch(function(){ if(paths.length > 1) return fetchJson(paths.slice(1)); throw new Error('not ok'); });
+    }
+    function goToSubject(key){ window.location.href = 'subject.html?subject=' + encodeURIComponent(key); }
+    function renderSubjects(subjects){
+      var grid = document.getElementById('subjectGrid');
+      grid.innerHTML = SUBJECT_ORDER.map(function(key, index){
+        var s = subjects[key]; if(!s) return '';
+        var enabled = s.enabled !== false;
+        var classes = 'subject' + (index === 0 ? ' featured' : '') + (enabled ? '' : ' disabled');
+        var tag = enabled ? 'Explore' : 'Coming soon';
+        var content = '<span class="subject-icon"><img class="svg" src="' + escapeHtml(s.icon) + '" alt=""></span><h3>' + escapeHtml(s.name || key) + '</h3><p>' + escapeHtml(s.description || '') + '</p><span class="card-go">' + tag + ' <span>→</span></span>';
+        return enabled ? '<a class="' + classes + '" href="subject.html?subject=' + encodeURIComponent(key) + '">' + content + '</a>' : '<div class="' + classes + '" aria-disabled="true">' + content + '</div>';
       }).join('');
     }
-
-    function loadSubjects(paths) {
-      const [path, ...rest] = paths;
-      fetch(path).then(response => {
-        if (!response.ok) throw new Error('Could not load subject data');
-        return response.json();
-      }).then(renderSubjects).catch(() => rest.length ? loadSubjects(rest) : (grid.innerHTML = '<p class="subject-load-error">Could not load subjects.json.</p>'));
-    }
-
-    loadSubjects(['assets/subjects.json', 'subjects.json']);
+    fetchJson(['assets/subjects.json', 'subjects.json']).then(renderSubjects).catch(function(){ document.getElementById('subjectGrid').innerHTML = '<p class="subject-load-error">Could not load subjects.json.</p>'; });
     document.querySelectorAll('[data-ai]').forEach(button => button.addEventListener('click', () => {
       const toast = document.getElementById('toast');
       toast.classList.add('show');
