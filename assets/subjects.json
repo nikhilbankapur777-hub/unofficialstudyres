@@ -1,19 +1,18 @@
 {
   "physics": {
     "name": "Physics",
-    "description": "coming soon",
+    "description": "for engineering",
     "icon": "assets/icons/physics.svg",
-    "enabled": false,
     "resources": [
       {
-        "heading": "Unit 1 — Mechanics",
-        "description": "Kinematics, Newton's laws, work and energy.",
-        "link": "https://example.com/physics-unit1.pdf"
+        "heading": "Quantum Mechanics",
+        "description": "Master formula sheet",
+        "link": "DOC-20260925-WA0000.pdf"
       },
       {
-        "heading": "Unit 2 — Electromagnetism",
-        "description": "Electric fields, circuits, and magnetism.",
-        "link": "https://example.com/physics-unit2.pdf"
+        "heading": "upcoming feature",
+        "description": "coming soon",
+        "link": ""
       }
     ]
   },
