@@ -30,8 +30,8 @@
     "icon": "assets/icons/maths.svg",
     "resources": [
       {
-        "heading": "whatever you may need today",
-        "description": "lets go",
+        "heading": "Complete Module 1",
+        "description": "comprehensive notes",
         "link": "Linear_Algebra_Notes_Updated.pdf"
       }
     ]
