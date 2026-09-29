@@ -5,6 +5,11 @@
     "icon": "assets/icons/physics.svg",
     "resources": [
      {
+        "heading": "More about Stefan Boltzmann Law (lab 4th exp)",
+        "description": "Not recommended(if you dont have interest)",
+        "link": "assets/m1imp.pdf"
+      },
+      {
         "heading": "Module 1",
         "description": "important questions with solns",
         "link": "assets/m1imp.pdf"
