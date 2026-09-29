@@ -4,15 +4,15 @@
     "description": "for engineering",
     "icon": "assets/icons/physics.svg",
     "resources": [
-      {
-        "heading": "Quantum Mechanics",
-        "description": "Master formula sheet",
-        "link": "DOC-20260925-WA0000.pdf"
+     {
+        "heading": "Module 1",
+        "description": "important questions with solns",
+        "link": "assets/m1imp.pdf"
       },
       {
         "heading": "Quantum Mechanics",
         "description": "Master formula sheet",
-        "link": "assets/m1imp.pdf"
+        "link": "DOC-20260925-WA0000.pdf"
       }
     ]
   },
