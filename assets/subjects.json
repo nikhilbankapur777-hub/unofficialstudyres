@@ -65,5 +65,12 @@
     "icon": "assets/icons/special.svg",
     "enabled": false,
     "resources": []
+  },
+  "AI": {
+    "name": "AI",
+    "description": "Coming soon.",
+    "icon": "assets/icons/ai.svg",
+    "enabled": false,
+    "resources": []
   }
 }
