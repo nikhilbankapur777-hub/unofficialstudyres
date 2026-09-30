@@ -68,9 +68,8 @@
   },
   "AI": {
     "name": "AI",
-    "description": "Coming soon.",
+    "description": "hm..",
     "icon": "assets/icons/ai.svg",
-    "enabled": false,
     "resources": [
       {
         "heading": "Syllabus",
