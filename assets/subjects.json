@@ -85,26 +85,6 @@
         "heading": "Module 1",
         "description": "introduction to AI",
         "link": "assets/AI/Module 1.pdf"
-      },
-      {
-        "heading": "Module 2",
-        "description": "Introduction to Prompt Engineering",
-        "link": "assets/AI/Module 2.pdf"
-      },
-      {
-        "heading": "Module 3",
-        "description": "Prompt Engineering techniques using ChatGPT and GEMINI AI and META AI",
-        "link": "assets/AI/Module 3.pdf"
-      },
-      {
-        "heading": "Module 4",
-        "description": "Ethics and Trends in AI",
-        "link": "assets/AI/Module 4.pdf"
-      },
-      {
-        "heading": "Module 5",
-        "description": "Industrial Applications of AI",
-        "link": "assets/AI/Module 5.pdf"
       }
     ]
   }
