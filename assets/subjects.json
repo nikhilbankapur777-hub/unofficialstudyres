@@ -29,17 +29,17 @@
       {
         "heading": "Question Bank",
         "description": "Important Questions",
-        "link": "ecqbank.pdf"
+        "link": "assets/ecqbank.pdf"
       },
       {
         "heading": "Module 1",
         "description": "Semiconductors",
-        "link": "ecmodule1.pdf"
+        "link": "assets/ecmodule1.pdf"
       },
       {
         "heading": "Module 2",
         "description": "Transistors",
-        "link": "ecmodule2.pdf"
+        "link": "assets/ecmodule2.pdf"
       }
     ]
   },
@@ -51,12 +51,12 @@
       {
         "heading": "Module 1",
         "description": "question bank",
-        "link": "matm1.pdf"
+        "link": "assets/matm1.pdf"
       },
       {
         "heading": "Module 2",
         "description": "question bank",
-        "link": "matm2.pdf"
+        "link": "assets/matm2.pdf"
       },
       {
         "heading": "Complete Module 1",
@@ -73,7 +73,7 @@
       {
         "heading": "Module 1",
         "description": "Intoduction to python program",
-        "link": "pym1.pdf"
+        "link": "assets/pym1.pdf"
       }
     ]
   },
