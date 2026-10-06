@@ -359,6 +359,9 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     });
   }
 
+  /* reveal everything that is already on the page (headings, Timetable, Result Portal) */
+  prepReveal();
+
   /* ---------- subjects (from subjects.json) ---------- */
   function renderSubjects(subjects){
     var grid = document.getElementById('subjectGrid');
