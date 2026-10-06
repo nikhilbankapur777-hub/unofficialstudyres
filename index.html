@@ -186,8 +186,14 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .toast { position: fixed; z-index: 60; bottom: 32px; left: 50%; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; padding: 12px 20px; background: var(--ink); color: var(--cream); border: 3px solid var(--cream); border-radius: 999px; font-weight: 700; font-size: .95rem; transition: .3s var(--ease); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* ---------- mobile dock ---------- */
-.mobile-bar { display: none; }
+/* ---------- mobile menu (three-bar dropdown) ---------- */
+.burger { display: none; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--ink); flex-direction: column; align-items: center; justify-content: center; gap: 5px; transition: background .2s, transform .2s var(--ease); }
+.burger:hover { background: var(--claude); }
+.burger span { width: 20px; height: 3px; background: var(--cream); border-radius: 2px; transition: transform .3s var(--ease), opacity .2s; }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.menu { display: none; }
 
 /* ---------- entry + scroll motion ---------- */
 .curtain { position: fixed; inset: 0; z-index: 900; pointer-events: none; display: none; }
@@ -226,8 +232,19 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .subjects { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 760px) {
-  .topbar { grid-template-columns: 1fr; justify-items: center; padding: 0 14px; height: 58px; }
+  .topbar { grid-template-columns: 1fr auto; padding: 0 8px 0 18px; height: 58px; }
   .nav, .topbar > .icon-button { display: none; }
+  .burger { display: flex; }
+  .menu {
+    display: flex; flex-direction: column; gap: 4px; position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+    padding: 10px; background: #fff; border: var(--outline); border-radius: 28px; box-shadow: var(--pop);
+    opacity: 0; visibility: hidden; translate: 0 -10px; transition: opacity .25s ease, translate .35s var(--ease), visibility 0s .35s;
+  }
+  .menu.open { opacity: 1; visibility: visible; translate: 0 0; transition: opacity .25s ease, translate .35s var(--ease), visibility 0s; }
+  .menu a { padding: 14px 20px; border-radius: 18px; font-family: var(--display); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1; font-size: 1.6rem; line-height: 1; transition: background .2s; }
+  .menu a:hover { background: var(--butter); }
+  .menu a.on { background: var(--ink); color: var(--cream); }
+
   .hero { border-radius: 32px; box-shadow: 5px 5px 0 var(--ink); }
   .hero-actions .btn { width: 100%; }
   .subjects { gap: 12px; }
@@ -236,18 +253,8 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .subject h3 { margin-top: 24px; font-size: 1.3rem; }
   .featured h3 { font-size: 1.8rem; }
   .utility-grid { grid-template-columns: 1fr; }
-  .footer { margin-bottom: 110px; }
-
-  .mobile-bar {
-    display: flex; align-items: center; justify-content: space-around; position: fixed; z-index: 30;
-    left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); height: 64px; padding: 0 6px;
-    background: var(--ink); border: 3px solid var(--ink); border-radius: 24px; box-shadow: 0 0 0 3px var(--cream);
-  }
-  .mobile-bar a { display: grid; place-items: center; flex: 1; min-width: 0; height: 50px; margin: 0 2px; border-radius: 16px; opacity: .5; transition: opacity .2s, background .2s; }
-  .mobile-bar a.on { opacity: 1; background: rgba(255, 243, 168, .22); }
-  .mobile-bar a:active { opacity: 1; }
-  .mobile-bar .svg { width: 23px; height: 23px; }
-  .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .footer { margin-bottom: 40px; }
+  .toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 400px) {
   .subject p { font-size: .9rem; }
@@ -276,6 +283,12 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     <a class="brand" href="#top"><span class="brand-mark">S</span>study resources</a>
     <nav class="nav" aria-label="Main navigation"><a href="#top" data-spy="top">Home</a><a href="#subjects" data-spy="subjects">Subjects</a><a href="#tools" data-spy="tools">Tools</a></nav>
     <button class="icon-button" aria-label="Search"><img class="svg" src="assets/icons/search.svg" alt=""></button>
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Mobile navigation">
+      <a href="#top" data-spy="top">Home</a>
+      <a href="#subjects" data-spy="subjects">Subjects</a>
+      <a href="#tools" data-spy="tools">Tools</a>
+    </nav>
   </header>
 
   <main id="top">
@@ -316,14 +329,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 
   <footer class="footer"><span class="display">Study Resources</span><a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx">Developer</a></footer>
 </div>
-
-<nav class="mobile-bar" aria-label="Mobile navigation">
-  <a href="#top" data-spy="top" aria-label="Home"><img class="svg" src="assets/icons/explore.svg" alt=""></a>
-  <a href="#subjects" aria-label="Search"><img class="svg" src="assets/icons/search.svg" alt=""></a>
-  <a href="#subjects" data-spy="subjects" aria-label="Subjects"><img class="svg" src="assets/icons/subjects.svg" alt=""></a>
-  <a href="#tools" data-spy="tools" aria-label="Tools"><img class="svg" src="assets/icons/tools.svg" alt=""></a>
-  <a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx" aria-label="Developer"><img class="svg" src="assets/icons/developer.svg" alt=""></a>
-</nav>
 
 <div class="toast" id="toast" role="status">Community AI — coming soon</div>
 
@@ -409,6 +414,22 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     Object.keys(targets).forEach(function(id){ var el = document.getElementById(id); if(el) spy.observe(el); });
+  })();
+
+  /* ---------- mobile dropdown menu ---------- */
+  (function(){
+    var burger = document.getElementById('burger');
+    var menu = document.getElementById('menu');
+    function setMenu(open){
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.classList.toggle('open', open);
+    }
+    burger.addEventListener('click', function(e){ e.stopPropagation(); setMenu(burger.getAttribute('aria-expanded') !== 'true'); });
+    menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+    document.addEventListener('click', function(e){ if(!menu.contains(e.target)) setMenu(false); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ setMenu(false); burger.focus(); } });
+    matchMedia('(min-width: 761px)').addEventListener('change', function(){ setMenu(false); });
   })();
 
   /* ---------- entry sequence ---------- */
