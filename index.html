@@ -25,7 +25,6 @@
    STITCHED POP-PAPER — design language
    cream dotted notebook paper · ink outlines · hard offset shadows
    dashed "stitches" · blob + flower shapes · chunky soft serif
-   (derived from The Yarn Basket + Anush Decodes)
    ===================================================================== */
 :root {
   --cream: #fff7e6;
@@ -224,6 +223,150 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 @keyframes letterDrop { from { opacity: 0; translate: 0 -70%; rotate: -9deg; } to { opacity: 1; translate: 0 0; rotate: 0deg; } }
 @keyframes enterUp { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
 
+/* =====================================================================
+   COMMUNITY AI OVERLAY
+   ===================================================================== */
+.ai-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  display: none; place-items: center;
+  background: rgba(26, 22, 80, .55);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  padding: 20px;
+}
+.ai-overlay.open { display: grid; }
+.ai-panel {
+  width: min(820px, 100%); max-height: 92vh; overflow-y: auto;
+  background: var(--cream); border: var(--outline); border-radius: 36px;
+  box-shadow: 12px 12px 0 var(--ink); padding: 0 0 28px;
+  animation: aiIn .5s var(--ease) both;
+  position: relative;
+}
+@keyframes aiIn { from { opacity: 0; translate: 0 40px; scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+
+/* AI header */
+.ai-header {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 16px 22px; background: #fff; border-bottom: var(--outline);
+  border-radius: 36px 36px 0 0;
+}
+.back-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 20px; background: var(--ink); color: var(--cream);
+  border-radius: 999px; font-family: var(--display); font-weight: 900;
+  font-variation-settings: "SOFT" 100, "WONK" 1; font-size: .95rem;
+  transition: transform .2s var(--ease), background .2s;
+  flex: none; border: 2px solid transparent;
+}
+.back-btn:hover { background: var(--claude); transform: scale(1.03); }
+.back-btn .arrow { font-size: 1.2rem; line-height: 0; }
+
+.ai-title {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: 1.4rem; letter-spacing: -.01em;
+}
+.ai-title .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 4px rgba(169,197,160,.3); animation: pulse 2s infinite; }
+
+/* chat stream */
+.chat-stream {
+  display: flex; flex-direction: column; gap: 22px;
+  padding: 28px 22px 12px; min-height: 200px; max-height: 52vh; overflow-y: auto;
+}
+.message { display: flex; flex-direction: column; max-width: 88%; }
+.message.user { align-self: flex-end; align-items: flex-end; }
+.message.ai { align-self: flex-start; align-items: flex-start; }
+
+.bubble {
+  padding: 16px 22px; border: var(--outline); border-radius: 28px;
+  box-shadow: 4px 4px 0 var(--ink); font-weight: 500; line-height: 1.5;
+  background: #fff; max-width: 100%; word-break: break-word;
+}
+.message.user .bubble {
+  background: var(--peri); color: var(--ink); border-radius: 28px 28px 8px 28px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.message.ai .bubble {
+  background: var(--paper); border-radius: 28px 28px 28px 8px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.message.ai .bubble.thinking-bubble {
+  display: flex; align-items: center; gap: 12px; min-height: 60px;
+  background: var(--butter);
+}
+.thinking-dots { display: flex; gap: 6px; align-items: center; }
+.thinking-dots span {
+  width: 10px; height: 10px; background: var(--ink); border-radius: 50%;
+  display: block; animation: bounce 1.2s infinite ease-in-out;
+}
+.thinking-dots span:nth-child(2) { animation-delay: .2s; }
+.thinking-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce { 0%,80%,100% { transform: translateY(0); opacity: .5; } 40% { transform: translateY(-10px); opacity: 1; } }
+
+/* result blocks */
+.results-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; width: 100%; }
+.result-block {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 22px; background: var(--paper); border: var(--outline);
+  border-radius: 18px; box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .2s;
+  text-decoration: none; color: var(--ink); width: 100%;
+  animation: blockIn .5s var(--ease) both; animation-delay: calc(var(--i) * 60ms);
+  cursor: pointer;
+}
+.result-block:hover {
+  transform: translate(2px, 2px) rotate(-0.5deg); box-shadow: 6px 6px 0 var(--ink);
+  background: var(--butter);
+}
+@keyframes blockIn { from { opacity: 0; translate: 0 16px; scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+
+.result-info { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.result-heading {
+  font-family: var(--display); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: 1.15rem; line-height: 1.2;
+}
+.result-desc { font-size: .92rem; color: var(--ink-soft); line-height: 1.3; }
+.subject-tag {
+  display: inline-block; align-self: flex-start; margin-top: 4px;
+  padding: 4px 14px; background: var(--ink); color: var(--cream);
+  border-radius: 999px; font-size: .75rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.result-arrow {
+  flex: none; margin-left: 16px; font-size: 1.5rem; line-height: 0;
+  transition: transform .2s var(--ease); color: var(--ink);
+}
+.result-block:hover .result-arrow { transform: translateX(6px); }
+
+/* empty state */
+.empty-state {
+  padding: 32px 24px; text-align: center; background: #fff;
+  border: var(--outline); border-radius: 24px; box-shadow: var(--pop);
+  color: var(--ink-soft); font-weight: 500;
+}
+.empty-state .big { font-family: var(--display); font-weight: 900; font-size: 1.4rem; color: var(--ink); margin-bottom: 6px; }
+
+/* query form */
+.query-form {
+  margin: 16px 22px 0; display: flex; gap: 12px; flex-wrap: wrap;
+  background: #fff; padding: 12px 12px 12px 22px; border: var(--outline);
+  border-radius: 999px; box-shadow: var(--pop); align-items: center;
+}
+.query-form input {
+  flex: 1; min-width: 180px; padding: 14px 0; border: 0; background: transparent;
+  font: inherit; color: var(--ink); outline: none;
+}
+.query-form input::placeholder { color: rgba(26,22,80,.4); font-weight: 400; }
+.query-form button {
+  padding: 14px 32px; background: var(--ink); color: var(--cream);
+  border-radius: 999px; font-family: var(--display); font-weight: 900;
+  font-variation-settings: "SOFT" 100, "WONK" 1; font-size: 1rem;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background .2s, transform .2s var(--ease);
+  border: 2px solid transparent; flex: none;
+}
+.query-form button:hover { background: var(--claude); transform: scale(1.02); }
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
@@ -255,6 +398,22 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .utility-grid { grid-template-columns: 1fr; }
   .footer { margin-bottom: 40px; }
   .toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+  /* AI overlay mobile */
+  .ai-overlay { padding: 10px; }
+  .ai-panel { border-radius: 28px; box-shadow: 8px 8px 0 var(--ink); max-height: 96vh; }
+  .ai-header { padding: 12px 16px; gap: 10px; border-radius: 28px 28px 0 0; }
+  .back-btn { padding: 8px 14px; font-size: .85rem; }
+  .ai-title { font-size: 1.1rem; }
+  .chat-stream { padding: 20px 14px 8px; gap: 18px; max-height: 48vh; }
+  .message { max-width: 95%; }
+  .bubble { padding: 14px 18px; font-size: .95rem; }
+  .result-block { padding: 14px 16px; flex-wrap: wrap; }
+  .result-heading { font-size: 1rem; }
+  .result-arrow { font-size: 1.2rem; }
+  .query-form { margin: 12px 14px 0; padding: 8px 8px 8px 18px; border-radius: 28px; }
+  .query-form input { padding: 10px 0; font-size: .95rem; }
+  .query-form button { padding: 12px 22px; font-size: .9rem; }
 }
 @media (max-width: 400px) {
   .subject p { font-size: .9rem; }
@@ -262,6 +421,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .ai-panel { animation: none; }
 }
 </style>
 </head>
@@ -330,6 +490,31 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   <footer class="footer"><span class="display">Study Resources</span><a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx">Developer</a></footer>
 </div>
 
+<!-- ================================================================
+     COMMUNITY AI OVERLAY
+     ================================================================ -->
+<div class="ai-overlay" id="aiOverlay" aria-hidden="true">
+  <div class="ai-panel" role="dialog" aria-modal="true" aria-label="Community AI">
+    <header class="ai-header">
+      <button class="back-btn" id="aiBackBtn" type="button">
+        <span class="arrow">←</span> Back
+      </button>
+      <div class="ai-title">
+        <span class="dot"></span> Community AI
+      </div>
+    </header>
+
+    <div class="chat-stream" id="aiChatStream">
+      <!-- welcome message injected by JS -->
+    </div>
+
+    <form class="query-form" id="aiQueryForm">
+      <input type="text" id="aiQueryInput" placeholder="Ask anything — e.g. 'math module 1', 'quantum notes'..." autocomplete="off" />
+      <button type="submit">Ask <span style="font-size:1.2rem;">→</span></button>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status">Community AI — coming soon</div>
 
 <script>
@@ -364,10 +549,11 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     });
   }
 
-  /* reveal everything that is already on the page (headings, Timetable, Result Portal) */
   prepReveal();
 
   /* ---------- subjects (from subjects.json) ---------- */
+  var subjectsData = null; // kept for AI search
+
   function renderSubjects(subjects){
     var grid = document.getElementById('subjectGrid');
     grid.innerHTML = SUBJECT_ORDER.map(function(key, index){
@@ -380,16 +566,15 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     }).join('');
     prepReveal(grid);
   }
-  fetchJson(['assets/subjects.json', 'subjects.json']).then(renderSubjects).catch(function(){
+
+  fetchJson(['assets/subjects.json', 'subjects.json']).then(function(data){
+    subjectsData = data;
+    renderSubjects(data);
+    // preload AI welcome after data is ready
+    aiReady = true;
+  }).catch(function(){
     document.getElementById('subjectGrid').innerHTML = '<p class="subject-load-error">Could not load subjects.json.</p>';
   });
-
-  /* ---------- Community AI toast ---------- */
-  document.querySelectorAll('[data-ai]').forEach(function(button){ button.addEventListener('click', function(){
-    var toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(function(){ toast.classList.remove('show'); }, 1800);
-  }); });
 
   /* ---------- scrolling band ---------- */
   (function(){
@@ -398,7 +583,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     document.getElementById('bandTrack').innerHTML = html + html + html + html;
   })();
 
-  /* ---------- active section in nav + dock ---------- */
+  /* ---------- active section in nav ---------- */
   (function(){
     var targets = { hero: 'top', subjects: 'subjects', tools: 'tools' };
     var links = document.querySelectorAll('[data-spy]');
@@ -445,6 +630,197 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       setTimeout(function(){ if(c) c.remove(); }, 2900);
     } else { if(c) c.remove(); ready(); }
     setTimeout(ready, 4000);
+  })();
+
+  /* =================================================================
+     COMMUNITY AI OVERLAY LOGIC
+     ================================================================= */
+  (function(){
+    var overlay = document.getElementById('aiOverlay');
+    var panel = overlay.querySelector('.ai-panel');
+    var backBtn = document.getElementById('aiBackBtn');
+    var chatStream = document.getElementById('aiChatStream');
+    var form = document.getElementById('aiQueryForm');
+    var input = document.getElementById('aiQueryInput');
+    var isThinking = false;
+    var aiReady = false;
+    var lastFocused = null;
+
+    /* ---------- open / close ---------- */
+    function openAI() {
+      lastFocused = document.activeElement;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      // focus input after animation
+      setTimeout(function(){ input.focus(); }, 300);
+      // reset stream if no messages
+      if (!chatStream.dataset.initialized) {
+        chatStream.dataset.initialized = '1';
+        addMessage('ai', 'Hi! I\'m <strong>Community AI</strong>. Ask me for study resources — try <em>"math module 1"</em>, <em>"quantum notes"</em>, or <em>"physics"</em>.');
+      }
+    }
+    function closeAI() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    backBtn.addEventListener('click', closeAI);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeAI();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeAI();
+    });
+
+    // attach to all buttons with data-ai
+    document.querySelectorAll('[data-ai]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.preventDefault(); openAI(); });
+    });
+
+    /* ---------- message helpers ---------- */
+    function addMessage(role, content, isThinking) {
+      var msgDiv = document.createElement('div');
+      msgDiv.className = 'message ' + role;
+
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble' + (isThinking ? ' thinking-bubble' : '');
+
+      if (isThinking) {
+        bubble.innerHTML = '<span style="font-weight:600;">Thinking</span><div class="thinking-dots"><span></span><span></span><span></span></div>';
+      } else {
+        bubble.innerHTML = content;
+      }
+
+      msgDiv.appendChild(bubble);
+      chatStream.appendChild(msgDiv);
+      chatStream.scrollTop = chatStream.scrollHeight;
+      return msgDiv;
+    }
+
+    function removeMessage(el) {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }
+
+    /* ---------- search logic ---------- */
+    function searchResources(query) {
+      if (!subjectsData) return [];
+      var q = query.toLowerCase().trim();
+      if (!q) return [];
+
+      var results = [];
+      var terms = q.split(/\s+/).filter(Boolean);
+
+      Object.keys(subjectsData).forEach(function(key) {
+        var subject = subjectsData[key];
+        if (!subject || subject.enabled === false) return;
+
+        var subjectName = (subject.name || key).toLowerCase();
+        var resources = subject.resources || [];
+
+        resources.forEach(function(res) {
+          var heading = (res.heading || '').toLowerCase();
+          var description = (res.description || '').toLowerCase();
+          var combined = heading + ' ' + description + ' ' + subjectName;
+
+          var allMatch = terms.every(function(term) {
+            return combined.indexOf(term) !== -1;
+          });
+
+          var fullMatch = combined.indexOf(q) !== -1;
+
+          if (allMatch || fullMatch) {
+            results.push({
+              subjectKey: key,
+              subjectName: subject.name || key,
+              heading: res.heading || 'Resource',
+              description: res.description || '',
+              link: res.link || '#'
+            });
+          }
+        });
+      });
+
+      return results;
+    }
+
+    /* ---------- render results as animated blocks ---------- */
+    function renderResults(results) {
+      if (results.length === 0) {
+        return '<div class="empty-state"><div class="big">No results found</div><p>Try searching for "module 1", "physics", "quantum", or "notes".</p></div>';
+      }
+
+      var html = '<div class="results-grid">';
+      results.forEach(function(r, i) {
+        var subjectTag = '<span class="subject-tag">' + escapeHtml(r.subjectName) + '</span>';
+        html += '<a class="result-block" href="' + escapeHtml(r.link) + '" target="_blank" rel="noopener" style="--i:' + i + '">' +
+          '<div class="result-info">' +
+            '<span class="result-heading">' + escapeHtml(r.heading) + '</span>' +
+            (r.description ? '<span class="result-desc">' + escapeHtml(r.description) + '</span>' : '') +
+            subjectTag +
+          '</div>' +
+          '<span class="result-arrow">→</span>' +
+        '</a>';
+      });
+      html += '</div>';
+      return html;
+    }
+
+    /* ---------- handle query submission ---------- */
+    function handleQuery(query) {
+      if (isThinking || !query.trim()) return;
+      isThinking = true;
+
+      // 1. Add user message
+      addMessage('user', escapeHtml(query));
+
+      // 2. Add AI thinking bubble
+      var thinkingMsg = addMessage('ai', '', true);
+
+      // 3. After 1800ms, replace with results
+      setTimeout(function() {
+        removeMessage(thinkingMsg);
+
+        var results = searchResources(query);
+        var resultHtml = renderResults(results);
+        addMessage('ai', resultHtml);
+
+        isThinking = false;
+      }, 1800);
+    }
+
+    /* ---------- form submit ---------- */
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var q = input.value.trim();
+      if (!q) return;
+      input.value = '';
+      handleQuery(q);
+    });
+
+    /* ---------- initial data load for AI ---------- */
+    // We already fetch subjectsData in the main script; poll for it
+    function waitForData() {
+      if (subjectsData) {
+        aiReady = true;
+        input.disabled = false;
+        input.placeholder = 'Ask anything — e.g. \'math module 1\', \'quantum notes\'...';
+      } else {
+        setTimeout(waitForData, 200);
+      }
+    }
+    waitForData();
+
+    // If data fails, still allow typing but show error on search
+    setTimeout(function() {
+      if (!aiReady) {
+        input.disabled = false;
+        input.placeholder = 'Data loading... you can still try';
+      }
+    }, 3000);
+
   })();
 </script>
 </body>
