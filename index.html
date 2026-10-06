@@ -178,25 +178,12 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .utility.disabled { opacity: .62; cursor: not-allowed; box-shadow: none; }
 .utility.disabled:hover { transform: rotate(1deg); box-shadow: none; }
 
-.footer { margin-top: clamp(72px, 10vw, 120px); padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--ink); color: var(--cream); border-radius: 32px; margin-bottom: 110px; }
+.footer { margin-top: clamp(72px, 10vw, 120px); padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--ink); color: var(--cream); border-radius: 32px; margin-bottom: 40px; }
 .footer .display { font-size: 1.5rem; }
 .footer a { padding: 9px 20px; border: 2px solid var(--cream); border-radius: 999px; font-weight: 700; transition: background .2s, color .2s; }
 .footer a:hover { background: var(--butter); color: var(--ink); border-color: var(--butter); }
 
-/* ---------- floating "Made with Claude" tag ---------- */
-.made-with {
-  position: fixed; z-index: 35; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-  display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 20px 0 14px;
-  background: #fff; color: var(--ink); border: var(--outline); border-radius: 999px; box-shadow: 4px 4px 0 var(--ink);
-  font-size: .95rem; white-space: nowrap; animation: tagIn .9s 2.2s var(--ease) both;
-  transition: box-shadow .2s var(--ease), translate .2s var(--ease), rotate .2s var(--ease);
-}
-.made-with b { font-family: var(--display); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1; font-size: 1.08rem; }
-.made-with:hover { translate: 2px 2px; rotate: -2deg; box-shadow: 2px 2px 0 var(--ink); }
-.claude-mark { width: 24px; height: 24px; flex: none; transition: transform .6s var(--ease); }
-.made-with:hover .claude-mark { transform: rotate(90deg) scale(1.1); }
-
-.toast { position: fixed; z-index: 60; bottom: 86px; left: 50%; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; padding: 12px 20px; background: var(--ink); color: var(--cream); border: 3px solid var(--cream); border-radius: 999px; font-weight: 700; font-size: .95rem; transition: .3s var(--ease); }
+.toast { position: fixed; z-index: 60; bottom: 32px; left: 50%; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; padding: 12px 20px; background: var(--ink); color: var(--cream); border: 3px solid var(--cream); border-radius: 999px; font-weight: 700; font-size: .95rem; transition: .3s var(--ease); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- mobile dock ---------- */
@@ -230,7 +217,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 @keyframes coreOut { to { opacity: 0; scale: 1.06; } }
 @keyframes letterDrop { from { opacity: 0; translate: 0 -70%; rotate: -9deg; } to { opacity: 1; translate: 0 0; rotate: 0deg; } }
 @keyframes enterUp { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
-@keyframes tagIn { from { opacity: 0; transform: translate(-50%, 24px) scale(.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
@@ -250,7 +236,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .subject h3 { margin-top: 24px; font-size: 1.3rem; }
   .featured h3 { font-size: 1.8rem; }
   .utility-grid { grid-template-columns: 1fr; }
-  .footer { margin-bottom: 170px; }
+  .footer { margin-bottom: 110px; }
 
   .mobile-bar {
     display: flex; align-items: center; justify-content: space-around; position: fixed; z-index: 30;
@@ -261,8 +247,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .mobile-bar a.on { opacity: 1; background: rgba(255, 243, 168, .22); }
   .mobile-bar a:active { opacity: 1; }
   .mobile-bar .svg { width: 23px; height: 23px; }
-  .made-with { bottom: calc(88px + env(safe-area-inset-bottom)); }
-  .toast { bottom: calc(144px + env(safe-area-inset-bottom)); }
+  .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 400px) {
   .subject p { font-size: .9rem; }
@@ -339,14 +324,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   <a href="#tools" data-spy="tools" aria-label="Tools"><img class="svg" src="assets/icons/tools.svg" alt=""></a>
   <a href="https://nikhilbankapur777-hub.github.io/communityx/profile.html?id=nikhil@commx" aria-label="Developer"><img class="svg" src="assets/icons/developer.svg" alt=""></a>
 </nav>
-
-<!-- floating "Made with Claude" tag -->
-<a class="made-with" href="https://claude.ai" target="_blank" rel="noopener" aria-label="Made with Claude">
-  <svg class="claude-mark" viewBox="0 0 24 24" fill="none" stroke="#d97757" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
-    <path d="M15.2 12L22.5 12M14.77 13.6L19.1 16.1M13.6 14.77L17.25 21.09M12 15.2L12 20.2M10.4 14.77L6.75 21.09M9.23 13.6L4.9 16.1M8.8 12L1.5 12M9.23 10.4L4.9 7.9M10.4 9.23L6.75 2.91M12 8.8L12 3.8M13.6 9.23L17.25 2.91M14.77 10.4L19.1 7.9"/>
-  </svg>
-  <span>Made with <b>Claude</b></span>
-</a>
 
 <div class="toast" id="toast" role="status">Community AI — coming soon</div>
 
