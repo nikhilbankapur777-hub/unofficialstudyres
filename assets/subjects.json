@@ -23,14 +23,23 @@
   },
   "electronics": {
     "name": "Electronics",
-    "description": "coming soon",
+    "description": "........",
     "icon": "assets/icons/electronics.svg",
-    "enabled": false,
     "resources": [
       {
-        "heading": "Basic Electronics",
-        "description": "Diodes, transistors, and op-amps.",
-        "link": "https://example.com/electronics-basics.pdf"
+        "heading": "Question Bank",
+        "description": "Important Questions",
+        "link": "ecqbank.pdf"
+      },
+      {
+        "heading": "Module 1",
+        "description": "Semiconductors",
+        "link": "ecmodule1.pdf"
+      },
+      {
+        "heading": "Module 2",
+        "description": "Transistors",
+        "link": "ecmodule2.pdf"
       }
     ]
   },
@@ -39,6 +48,16 @@
     "description": "Notes of Modules",
     "icon": "assets/icons/maths.svg",
     "resources": [
+      {
+        "heading": "Module 1",
+        "description": "official",
+        "link": "matm1.pdf"
+      },
+      {
+        "heading": "Module 2",
+        "description": "official",
+        "link": "matm2.pdf"
+      },
       {
         "heading": "Complete Module 1",
         "description": "comprehensive notes",
@@ -50,12 +69,11 @@
     "name": "Programming",
     "description": "coming soon",
     "icon": "assets/icons/programming.svg",
-    "enabled": false,
     "resources": [
       {
-        "heading": "DSA Notes",
-        "description": "Arrays, linked lists, trees, and graphs.",
-        "link": "https://example.com/programming-dsa.pdf"
+        "heading": "Module 1",
+        "description": "Intoduction to python program",
+        "link": "pym1.pdf"
       }
     ]
   },
