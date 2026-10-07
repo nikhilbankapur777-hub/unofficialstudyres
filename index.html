@@ -113,9 +113,15 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .arrow { font-size: 1.2rem; line-height: 0; transition: transform .2s var(--ease); }
 .btn:hover .arrow { transform: translateX(4px); }
 
+/* ---------- hero art (UPDATED: non-edgy rectangular container) ---------- */
 .hero-art { position: relative; width: 100%; max-width: 420px; justify-self: center; }
 .hero-art::before { content: ""; position: absolute; inset: -9%; z-index: 0; background: var(--butter); -webkit-mask: var(--flower) center / 100% 100% no-repeat; mask: var(--flower) center / 100% 100% no-repeat; animation: spin 50s linear infinite; }
-.hero-art img { position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--butter); border: var(--outline); border-radius: 50% 50% 28px 28px / 38% 38% 28px 28px; box-shadow: 8px 8px 0 var(--ink); }
+.hero-art img {
+  position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  background: var(--butter); border: var(--outline);
+  border-radius: 24px; /* flat, soft rectangular frame — no semicircle */
+  box-shadow: 8px 8px 0 var(--ink);
+}
 
 .badge { position: absolute; z-index: 3; width: clamp(104px, 12vw, 138px); aspect-ratio: 1; right: -6%; bottom: 6%; }
 .badge svg { width: 100%; height: 100%; animation: spin 18s linear infinite; }
@@ -243,7 +249,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 }
 @keyframes aiIn { from { opacity: 0; translate: 0 40px; scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
 
-/* AI header */
 .ai-header {
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
@@ -268,7 +273,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 }
 .ai-title .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 4px rgba(169,197,160,.3); animation: pulse 2s infinite; }
 
-/* chat stream */
 .chat-stream {
   display: flex; flex-direction: column; gap: 22px;
   padding: 28px 22px 12px; min-height: 200px; max-height: 52vh; overflow-y: auto;
@@ -303,7 +307,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .thinking-dots span:nth-child(3) { animation-delay: .4s; }
 @keyframes bounce { 0%,80%,100% { transform: translateY(0); opacity: .5; } 40% { transform: translateY(-10px); opacity: 1; } }
 
-/* result blocks */
 .results-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; width: 100%; }
 .result-block {
   display: flex; align-items: center; justify-content: space-between;
@@ -338,7 +341,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 }
 .result-block:hover .result-arrow { transform: translateX(6px); }
 
-/* empty state */
 .empty-state {
   padding: 32px 24px; text-align: center; background: #fff;
   border: var(--outline); border-radius: 24px; box-shadow: var(--pop);
@@ -346,7 +348,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 }
 .empty-state .big { font-family: var(--display); font-weight: 900; font-size: 1.4rem; color: var(--ink); margin-bottom: 6px; }
 
-/* query form */
 .query-form {
   margin: 16px 22px 0; display: flex; gap: 12px; flex-wrap: wrap;
   background: #fff; padding: 12px 12px 12px 22px; border: var(--outline);
@@ -399,7 +400,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .footer { margin-bottom: 40px; }
   .toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
 
-  /* AI overlay mobile */
   .ai-overlay { padding: 10px; }
   .ai-panel { border-radius: 28px; box-shadow: 8px 8px 0 var(--ink); max-height: 96vh; }
   .ai-header { padding: 12px 16px; gap: 10px; border-radius: 28px 28px 0 0; }
@@ -552,7 +552,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   prepReveal();
 
   /* ---------- subjects (from subjects.json) ---------- */
-  var subjectsData = null; // kept for AI search
+  var subjectsData = null;
 
   function renderSubjects(subjects){
     var grid = document.getElementById('subjectGrid');
@@ -570,8 +570,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   fetchJson(['assets/subjects.json', 'subjects.json']).then(function(data){
     subjectsData = data;
     renderSubjects(data);
-    // preload AI welcome after data is ready
-    aiReady = true;
   }).catch(function(){
     document.getElementById('subjectGrid').innerHTML = '<p class="subject-load-error">Could not load subjects.json.</p>';
   });
@@ -637,24 +635,19 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
      ================================================================= */
   (function(){
     var overlay = document.getElementById('aiOverlay');
-    var panel = overlay.querySelector('.ai-panel');
     var backBtn = document.getElementById('aiBackBtn');
     var chatStream = document.getElementById('aiChatStream');
     var form = document.getElementById('aiQueryForm');
     var input = document.getElementById('aiQueryInput');
     var isThinking = false;
-    var aiReady = false;
     var lastFocused = null;
 
-    /* ---------- open / close ---------- */
     function openAI() {
       lastFocused = document.activeElement;
       overlay.classList.add('open');
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      // focus input after animation
       setTimeout(function(){ input.focus(); }, 300);
-      // reset stream if no messages
       if (!chatStream.dataset.initialized) {
         chatStream.dataset.initialized = '1';
         addMessage('ai', 'Hi! I\'m <strong>Community AI</strong>. Ask me for study resources — try <em>"math module 1"</em>, <em>"quantum notes"</em>, or <em>"physics"</em>.');
@@ -675,25 +668,20 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       if (e.key === 'Escape' && overlay.classList.contains('open')) closeAI();
     });
 
-    // attach to all buttons with data-ai
     document.querySelectorAll('[data-ai]').forEach(function(btn){
       btn.addEventListener('click', function(e){ e.preventDefault(); openAI(); });
     });
 
-    /* ---------- message helpers ---------- */
     function addMessage(role, content, isThinking) {
       var msgDiv = document.createElement('div');
       msgDiv.className = 'message ' + role;
-
       var bubble = document.createElement('div');
       bubble.className = 'bubble' + (isThinking ? ' thinking-bubble' : '');
-
       if (isThinking) {
         bubble.innerHTML = '<span style="font-weight:600;">Thinking</span><div class="thinking-dots"><span></span><span></span><span></span></div>';
       } else {
         bubble.innerHTML = content;
       }
-
       msgDiv.appendChild(bubble);
       chatStream.appendChild(msgDiv);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -704,7 +692,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       if (el && el.parentNode) el.parentNode.removeChild(el);
     }
 
-    /* ---------- search logic ---------- */
     function searchResources(query) {
       if (!subjectsData) return [];
       var q = query.toLowerCase().trim();
@@ -746,7 +733,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       return results;
     }
 
-    /* ---------- render results as animated blocks ---------- */
     function renderResults(results) {
       if (results.length === 0) {
         return '<div class="empty-state"><div class="big">No results found</div><p>Try searching for "module 1", "physics", "quantum", or "notes".</p></div>';
@@ -768,30 +754,22 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       return html;
     }
 
-    /* ---------- handle query submission ---------- */
     function handleQuery(query) {
       if (isThinking || !query.trim()) return;
       isThinking = true;
 
-      // 1. Add user message
       addMessage('user', escapeHtml(query));
-
-      // 2. Add AI thinking bubble
       var thinkingMsg = addMessage('ai', '', true);
 
-      // 3. After 1800ms, replace with results
       setTimeout(function() {
         removeMessage(thinkingMsg);
-
         var results = searchResources(query);
         var resultHtml = renderResults(results);
         addMessage('ai', resultHtml);
-
         isThinking = false;
       }, 1800);
     }
 
-    /* ---------- form submit ---------- */
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       var q = input.value.trim();
@@ -800,11 +778,9 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       handleQuery(q);
     });
 
-    /* ---------- initial data load for AI ---------- */
-    // We already fetch subjectsData in the main script; poll for it
+    // enable input when data is ready
     function waitForData() {
       if (subjectsData) {
-        aiReady = true;
         input.disabled = false;
         input.placeholder = 'Ask anything — e.g. \'math module 1\', \'quantum notes\'...';
       } else {
@@ -813,9 +789,8 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     }
     waitForData();
 
-    // If data fails, still allow typing but show error on search
     setTimeout(function() {
-      if (!aiReady) {
+      if (!subjectsData) {
         input.disabled = false;
         input.placeholder = 'Data loading... you can still try';
       }
