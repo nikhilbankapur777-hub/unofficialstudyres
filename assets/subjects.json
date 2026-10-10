@@ -74,6 +74,11 @@
         "heading": "Module 1",
         "description": "Intoduction to python program",
         "link": "assets/pym1.pdf"
+      },
+      {
+        "heading": "Assignment 1",
+        "description": "solutions",
+        "link": "assets/pym1.pdf"
       }
     ]
   },
