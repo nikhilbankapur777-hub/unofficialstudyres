@@ -71,6 +71,11 @@
     "icon": "assets/icons/programming.svg",
     "resources": [
       {
+        "heading": "Front Page",
+        "description": "tool",
+        "link": "assets/frontpage.html"
+      },
+      {
         "heading": "Module 1",
         "description": "Intoduction to python program",
         "link": "assets/pym1.pdf"
