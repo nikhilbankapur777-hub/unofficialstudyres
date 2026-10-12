@@ -5,12 +5,12 @@
     "icon": "assets/icons/physics.svg",
     "resources": [
      {
-        "heading": "More about Stefan Boltzmann Law (lab 4th exp)",
-        "description": "Not recommended(if you dont have interest)",
-        "link": "assets/Physics Galaxy - Thermodynamics, Oscillation & Waves (dragged).pdf"
+        "heading": "Module 1",
+        "description": "important questions with solns",
+        "link": "assets/Module 1 AY 2026-27.pdf"
       },
       {
-        "heading": "Module 1",
+        "heading": "Module 1 numericals",
         "description": "important questions with solns",
         "link": "assets/m1imp_with_additional_quantum_numericals.pdf"
       },
@@ -18,6 +18,11 @@
         "heading": "Quantum Mechanics",
         "description": "Master formula sheet",
         "link": "DOC-20260925-WA0000.pdf"
+      },
+      {
+        "heading": "More about Stefan Boltzmann Law (lab 4th exp)",
+        "description": "Not recommended(if you dont have interest)",
+        "link": "assets/Physics Galaxy - Thermodynamics, Oscillation & Waves (dragged).pdf"
       }
     ]
   },
