@@ -76,6 +76,11 @@
     "icon": "assets/icons/programming.svg",
     "resources": [
       {
+        "heading": "lab 4,5,6",
+        "description": "4,5,6 respectively",
+        "link": "assets/lab456.pdf"
+      },
+      {
         "heading": "Front Page",
         "description": "tool",
         "link": "assets/frontpage.html"
