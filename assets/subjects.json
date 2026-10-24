@@ -125,5 +125,33 @@
         "link": "assets/AI/Module 1.pdf"
       }
     ]
+  },
+  "kannada": {
+  "name": "Kannada",
+  "description": "Notes, PDFs and videos for Kannada.",
+  "icon": "assets/icons/kannada.svg",
+  "enabled": true,
+  "resources": [
+    {
+    "heading": "test topic solutions",
+        "description": "may be useful",
+        "link": "assets/cietksk.pdf"
+    },
+    {
+    "heading": "test topic",
+        "description": "for cie",
+        "link": "assets/kskimpt.pdf"
+    },
+    {
+    "heading": "Module 1",
+        "description": "notes",
+        "link": "assets/module1ksk.pdf"
+    },
+    {
+    "heading": "Module 2",
+        "description": "notes",
+        "link": "assets/module2ksk.pdf"
+    }
+  ]
   }
 }
