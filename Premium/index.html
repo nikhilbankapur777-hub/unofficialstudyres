@@ -12,7 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&display=swap" rel="stylesheet">
 
 <script>
-  /* decide the entry animation up-front so there's no flash */
   (function () {
     var R = document.documentElement;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -21,11 +20,7 @@
 </script>
 
 <style>
-/* =====================================================================
-   STITCHED POP-PAPER — design language
-   cream dotted notebook paper · ink outlines · hard offset shadows
-   dashed "stitches" · blob + flower shapes · chunky soft serif
-   ===================================================================== */
+/* ===== design tokens ===== */
 :root {
   --cream: #fff7e6;
   --paper: #fffdf6;
@@ -64,7 +59,6 @@ h1, h2, h3, p, ul { margin: 0; }
 ul { padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; touch-action: manipulation; }
-a { touch-action: manipulation; }
 :focus-visible { outline: 3px solid var(--claude); outline-offset: 3px; }
 
 h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1; line-height: .95; letter-spacing: -.015em; }
@@ -73,7 +67,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .shell { width: min(1200px, 100%); margin: auto; padding: 0 var(--pad-x); }
 .svg { width: 22px; height: 22px; object-fit: contain; }
 
-/* ---------- top bar (floating pill) ---------- */
+/* ===== topbar ===== */
 .topbar {
   position: sticky; top: 12px; z-index: 40; margin-top: 12px; height: 64px;
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
@@ -88,8 +82,14 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .nav a[aria-current="true"] { background: var(--ink); color: var(--cream); }
 .icon-button { justify-self: end; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); transition: transform .2s var(--ease), background .2s; }
 .icon-button:hover { transform: rotate(-12deg) scale(1.08); background: var(--claude); }
+.burger { display: none; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--ink); flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+.burger span { width: 20px; height: 3px; background: var(--cream); border-radius: 2px; transition: transform .3s var(--ease), opacity .2s; }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.menu { display: none; }
 
-/* ---------- premium hero ---------- */
+/* ===== premium hero ===== */
 .hero {
   position: relative; margin-top: 20px; overflow: hidden; isolation: isolate;
   display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: clamp(24px, 5vw, 64px);
@@ -98,14 +98,14 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; aspect-ratio: 1; -webkit-mask: var(--flower) center / 100% 100% no-repeat; mask: var(--flower) center / 100% 100% no-repeat; }
 .hero::before { width: clamp(120px, 16vw, 220px); left: -4%; top: -6%; background: var(--rose); animation: spin 46s linear infinite; }
 .hero::after  { width: clamp(100px, 13vw, 180px); left: 36%; bottom: -9%; background: var(--peri); animation: spin 38s linear infinite reverse; }
-
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; background: #fff; border: var(--outline); border-radius: 999px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--claude); box-shadow: 0 0 0 4px rgba(217, 119, 87, .25); animation: pulse 2s infinite; }
 .hero h1 { margin: 22px 0 18px; font-size: clamp(2.8rem, 7vw, 5.4rem); line-height: .93; letter-spacing: -.03em; }
 .hl { display: inline-block; margin-top: .08em; padding: 0 .18em .06em; background: var(--butter); border: var(--outline); border-radius: 18px; rotate: -2.5deg; box-shadow: 4px 4px 0 var(--ink); }
 .hero-copy p { max-width: 44ch; font-size: clamp(1rem, 1.6vw, 1.15rem); font-weight: 500; }
 
-/* ---------- premium gate panel ---------- */
+/* ===== gate ===== */
+#gateSection { display: block; }
 .gate-wrap {
   position: relative; max-width: 460px; margin: 60px auto 0;
   padding: 48px 28px 32px; text-align: center;
@@ -143,10 +143,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .gate-submit:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
 .gate-submit:disabled { opacity: .6; cursor: wait; }
 
-/* ---------- premium content (hidden until unlocked) ---------- */
-.premium-content { display: none; }
-.premium-content.unlocked { display: block; animation: enterUp .8s var(--ease) both; }
-
+/* ===== premium vault ===== */
 .section { padding: clamp(72px, 10vw, 120px) 0 0; }
 .section-head { margin-bottom: clamp(24px, 4vw, 40px); }
 .section h2 { font-size: clamp(2.5rem, 6.5vw, 4.8rem); }
@@ -181,22 +178,15 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 }
 .premium-card .card-go span { transition: transform .2s var(--ease); }
 .premium-card:hover .card-go span { transform: translateX(4px); }
+.premium-load-error { grid-column: 1 / -1; padding: 24px; background: #fff; border: var(--outline); border-radius: 20px; font-weight: 700; }
 
+/* ===== footer ===== */
 .footer { margin-top: clamp(72px, 10vw, 120px); padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--ink); color: var(--cream); border-radius: 32px; margin-bottom: 40px; }
 .footer .display { font-size: 1.5rem; }
 .footer a { padding: 9px 20px; border: 2px solid var(--cream); border-radius: 999px; font-weight: 700; transition: background .2s, color .2s; }
 .footer a:hover { background: var(--butter); color: var(--ink); border-color: var(--butter); }
 
-/* ---------- mobile menu (three-bar dropdown) ---------- */
-.burger { display: none; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--ink); flex-direction: column; align-items: center; justify-content: center; gap: 5px; transition: background .2s, transform .2s var(--ease); }
-.burger:hover { background: var(--claude); }
-.burger span { width: 20px; height: 3px; background: var(--cream); border-radius: 2px; transition: transform .3s var(--ease), opacity .2s; }
-.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-.menu { display: none; }
-
-/* ---------- entry + scroll motion ---------- */
+/* ===== curtain / motion ===== */
 .curtain { position: fixed; inset: 0; z-index: 900; pointer-events: none; display: none; }
 .has-curtain .curtain { display: block; }
 .has-curtain { overflow: hidden; }
@@ -226,7 +216,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 @keyframes aiIn { from { opacity: 0; translate: 0 40px; scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
 @keyframes shake { 20%, 60% { translate: -8px 0; } 40%, 80% { translate: 8px 0; } }
 
-/* ---------- responsive ---------- */
+/* ===== responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
   .premium-grid { grid-template-columns: 1fr 1fr; }
@@ -246,7 +236,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   .menu a.on { background: var(--ink); color: var(--cream); }
 
   .hero { border-radius: 32px; box-shadow: 5px 5px 0 var(--ink); }
-
   .gate-wrap { margin-top: 40px; padding: 40px 20px 28px; border-radius: 26px; box-shadow: 8px 8px 0 var(--ink); }
   .gate-badge { width: 54px; height: 54px; top: -26px; font-size: 1.5rem; }
   .gate-wrap h2 { font-size: 2rem; }
@@ -267,7 +256,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 
 <body>
 
-<!-- entry: paper curtain with the title stitching in -->
+<!-- entry curtain -->
 <div class="curtain" id="curtain" aria-hidden="true">
   <div class="curtain-half curtain-l"></div>
   <div class="curtain-half curtain-r"></div>
@@ -297,7 +286,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   </header>
 
   <main>
-    <!-- ===== PREMIUM HERO ===== -->
+    <!-- ===== HERO ===== -->
     <section class="hero" aria-labelledby="premium-title">
       <div class="hero-copy">
         <div class="eyebrow" data-enter style="--d:100"><i class="pulse"></i> Premium</div>
@@ -313,7 +302,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       </div>
     </section>
 
-    <!-- ===== ACCESS GATE (on top, integrated) ===== -->
+    <!-- ===== GATE (visible until verified) ===== -->
     <div id="gateSection">
       <form class="gate-wrap" id="gateForm" autocomplete="off" aria-labelledby="gateTitle">
         <span class="gate-badge">✦</span>
@@ -325,50 +314,8 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       </form>
     </div>
 
-    <!-- ===== PREMIUM CONTENT (revealed after unlock) ===== -->
-    <div class="premium-content" id="premiumContent">
-      <section class="section" aria-labelledby="vault-title">
-        <div class="section-head reveal"><p class="kicker">The vault</p><h2 id="vault-title">Premium resources.</h2></div>
-        <div class="premium-grid">
-          <a class="premium-card reveal" href="assets/premium/notes-pack.pdf" target="_blank" rel="noopener">
-            <span class="card-icon">📚</span>
-            <h3>Complete Notes Pack</h3>
-            <p>Every subject, every module — distilled into clean, printable PDFs.</p>
-            <span class="card-go"><b>Open PDF <span>→</span></b></span>
-          </a>
-          <a class="premium-card reveal" href="assets/premium/past-papers.zip" target="_blank" rel="noopener">
-            <span class="card-icon">📝</span>
-            <h3>Past Papers Vault</h3>
-            <p>Years of question papers with solutions, sorted by exam and topic.</p>
-            <span class="card-go"><b>Download <span>→</span></b></span>
-          </a>
-          <a class="premium-card reveal" href="assets/premium/video-lectures.html" target="_blank" rel="noopener">
-            <span class="card-icon">🎬</span>
-            <h3>Video Lectures</h3>
-            <p>Curated playlists for the tricky topics — no more endless searching.</p>
-            <span class="card-go"><b>Watch <span>→</span></b></span>
-          </a>
-          <a class="premium-card reveal" href="assets/premium/formula-sheets.pdf" target="_blank" rel="noopener">
-            <span class="card-icon">🧮</span>
-            <h3>Formula Sheets</h3>
-            <p>One-page cheat sheets for Physics, Maths and Electronics.</p>
-            <span class="card-go"><b>Open <span>→</span></b></span>
-          </a>
-          <a class="premium-card reveal" href="assets/premium/quick-revision.pdf" target="_blank" rel="noopener">
-            <span class="card-icon">⚡</span>
-            <h3>Quick Revision</h3>
-            <p>Last-minute summaries — perfect for the night before.</p>
-            <span class="card-go"><b>Open <span>→</span></b></span>
-          </a>
-          <a class="premium-card reveal" href="assets/premium/community-notes.html" target="_blank" rel="noopener">
-            <span class="card-icon">🤝</span>
-            <h3>Community Notes</h3>
-            <p>Shared by the community, verified by the group — the hidden gems.</p>
-            <span class="card-go"><b>Browse <span>→</span></b></span>
-          </a>
-        </div>
-      </section>
-    </div>
+    <!-- ===== PREMIUM VAULT (injected only after verification) ===== -->
+    <div id="premiumVault" aria-live="polite"></div>
   </main>
 
   <footer class="footer">
@@ -394,7 +341,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     setTimeout(ready, 4000);
   })();
 
-  /* ---------- mobile dropdown menu ---------- */
+  /* ---------- mobile menu ---------- */
   (function(){
     var burger = document.getElementById('burger');
     var menu = document.getElementById('menu');
@@ -411,67 +358,115 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   })();
 
   /* ---------- reveal on scroll ---------- */
+  var _revealIO = null;
   (function(){
     if (!document.documentElement.classList.contains('js-anim')) return;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    _revealIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); _revealIO.unobserve(e.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-
-    function watch(scope){
-      (scope || document).querySelectorAll('.reveal').forEach(function(el){
-        if(el.dataset.watched) return;
-        el.dataset.watched = '1';
-        var i = Array.prototype.indexOf.call(el.parentElement.children, el);
-        el.style.setProperty('--i', i % 5);
-        el.style.setProperty('--dir', i % 2 ? -1 : 1);
-        io.observe(el);
-      });
-    }
-    watch();
-    // re-watch when content is unlocked
-    window._premiumWatch = watch;
   })();
+  function watchReveals(scope){
+    if(!_revealIO) return;
+    (scope || document).querySelectorAll('.reveal').forEach(function(el){
+      if(el.dataset.watched) return;
+      el.dataset.watched = '1';
+      var i = Array.prototype.indexOf.call(el.parentElement.children, el);
+      el.style.setProperty('--i', i % 5);
+      el.style.setProperty('--dir', i % 2 ? -1 : 1);
+      _revealIO.observe(el);
+    });
+  }
 
   /* =================================================================
-     PREMIUM GATE LOGIC (integrated)
+     PREMIUM VAULT — content is ONLY injected after access verified.
+     The premium data file is assets/subjects1.json (premium version).
      ================================================================= */
-  (function(){
+  var SUBJECT_ORDER = ['physics', 'electronics', 'maths', 'programming', 'special', 'AI', 'kannada'];
+
+  function escapeHtml(str){ var d = document.createElement('div'); d.innerText = str == null ? '' : str; return d.innerHTML; }
+
+  function renderVault(subjects){
+    var order = SUBJECT_ORDER.filter(function(k){ return subjects[k]; });
+    // include any extra keys not in the known order
+    Object.keys(subjects).forEach(function(k){ if(order.indexOf(k) === -1) order.push(k); });
+
+    var cards = order.map(function(key){
+      var s = subjects[key];
+      if(!s) return '';
+      var enabled = s.enabled !== false;
+      var classes = 'premium-card reveal' + (enabled ? '' : ' disabled');
+      var icon = s.icon ? '<img class="svg" src="' + escapeHtml(s.icon) + '" alt="" style="width:26px;height:26px;filter:invert(1)">' : '✦';
+      var tag = enabled ? 'Open' : 'Coming soon';
+      var inner = '<span class="card-icon">' + icon + '</span>' +
+                  '<h3>' + escapeHtml(s.name || key) + '</h3>' +
+                  '<p>' + escapeHtml(s.description || '') + '</p>' +
+                  '<span class="card-go"><b>' + tag + ' <span>→</span></b></span>';
+      if(enabled){
+        return '<a class="' + classes + '" href="subject.html?subject=' + encodeURIComponent(key) + '&premium=1">' + inner + '</a>';
+      }
+      return '<div class="' + classes + '" aria-disabled="true" style="opacity:.62;cursor:not-allowed">' + inner + '</div>';
+    }).join('');
+
+    return '<section class="section" aria-labelledby="vault-title">' +
+             '<div class="section-head reveal"><p class="kicker">The vault</p><h2 id="vault-title">Premium resources.</h2></div>' +
+             '<div class="premium-grid">' + cards + '</div>' +
+           '</section>';
+  }
+
+  function showVault(){
+    if(document.getElementById('premiumVault').dataset.loaded) return;
+    document.getElementById('premiumVault').dataset.loaded = '1';
+
+    // Hide the gate immediately
     var gateSection = document.getElementById('gateSection');
-    var premiumContent = document.getElementById('premiumContent');
+    if(gateSection) gateSection.style.display = 'none';
+
+    // Now fetch the PREMIUM data file (subjects1.json) — not a fallback, it IS the premium content
+    fetch('assets/subjects1.json')
+      .then(function(res){
+        if(!res.ok) throw new Error('premium data not ok');
+        return res.json();
+      })
+      .then(function(data){
+        var vault = document.getElementById('premiumVault');
+        vault.innerHTML = renderVault(data);
+        watchReveals(vault);
+        vault.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      })
+      .catch(function(){
+        var vault = document.getElementById('premiumVault');
+        vault.innerHTML = '<section class="section"><div class="section-head"><p class="kicker">The vault</p><h2>Premium resources.</h2></div>' +
+          '<p class="premium-load-error">Could not load assets/subjects1.json.</p></section>';
+        watchReveals(vault);
+      });
+  }
+
+  /* ---------- gate logic — enforce strictly ---------- */
+  (function(){
     var panel = document.getElementById('gateForm');
     var input = document.getElementById('gateInput');
     var err = document.getElementById('gateError');
     var submit = document.getElementById('gateSubmit');
 
-    function showPremium(){
-      gateSection.style.display = 'none';
-      premiumContent.classList.add('unlocked');
-      if(window._premiumWatch) window._premiumWatch(premiumContent);
-      // scroll to content
-      premiumContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // Check existing unlock state on load
+    // If already unlocked, show vault immediately (and skip the gate)
     function checkExisting(){
       if(window.Premium && Premium.isUnlocked()){
-        showPremium();
+        showVault();
         return true;
       }
       return false;
     }
 
-    // Wait for gate.js to load Premium
     if (window.Premium) {
       checkExisting();
     } else {
-      // gate.js might load slightly later (defer / async) — poll briefly
       var tries = 0;
       var poll = setInterval(function(){
         tries++;
         if(window.Premium){
           clearInterval(poll);
           checkExisting();
-        } else if(tries > 30){
+        } else if(tries > 40){
           clearInterval(poll);
         }
       }, 100);
@@ -486,7 +481,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       Premium.unlock(code).then(function(ok){
         submit.disabled = false;
         if(ok){
-          showPremium();
+          showVault();
           return;
         }
         err.textContent = 'Wrong code. Try again.';
@@ -497,33 +492,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
         err.textContent = 'Needs https:// (or localhost) to check the code.';
         panel.classList.remove('shake'); void panel.offsetWidth; panel.classList.add('shake');
       });
-    });
-
-    // If already unlocked via gate.js before this runs, hide the gate
-    if (window.Premium && Premium.isUnlocked()) {
-      gateSection.style.display = 'none';
-      premiumContent.classList.add('unlocked');
-    }
-  })();
-
-  /* =================================================================
-     OPTIONAL: load subjects from assets/subjects1.json (fallback subjects1.json)
-     — path kept exactly as required. Only runs if a container exists.
-     ================================================================= */
-  (function(){
-    var grid = document.getElementById('subjectGrid');
-    if(!grid) return;  // no subject grid on this page — skip
-
-    function fetchJson(paths){
-      var path = paths[0];
-      return fetch(path).then(function(res){ if(!res.ok) throw new Error('not ok'); return res.json(); })
-        .catch(function(){ if(paths.length > 1) return fetchJson(paths.slice(1)); throw new Error('not ok'); });
-    }
-
-    fetchJson(['assets/subjects1.json', 'subjects1.json']).then(function(data){
-      window.subjectsData = data;
-    }).catch(function(){
-      // silent on premium page
     });
   })();
 </script>
