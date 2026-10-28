@@ -104,6 +104,15 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 .hl { display: inline-block; margin-top: .08em; padding: 0 .18em .06em; background: var(--butter); border: var(--outline); border-radius: 18px; rotate: -2.5deg; box-shadow: 4px 4px 0 var(--ink); }
 .hero-copy p { max-width: 44ch; font-size: clamp(1rem, 1.6vw, 1.15rem); font-weight: 500; }
 
+.hero-art { position: relative; width: 100%; max-width: 420px; justify-self: center; }
+.hero-art::before { content: ""; position: absolute; inset: -9%; z-index: 0; background: var(--butter); -webkit-mask: var(--flower) center / 100% 100% no-repeat; mask: var(--flower) center / 100% 100% no-repeat; animation: spin 50s linear infinite; }
+.hero-art img { position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--butter); border: var(--outline); border-radius: 24px; box-shadow: 8px 8px 0 var(--ink); }
+.badge { position: absolute; z-index: 3; width: clamp(104px, 12vw, 138px); aspect-ratio: 1; right: -6%; bottom: 6%; }
+.badge svg { width: 100%; height: 100%; animation: spin 18s linear infinite; }
+.badge text { font-family: var(--display); font-weight: 900; font-size: 17px; fill: var(--ink); }
+.badge::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--rose); border: var(--outline); }
+.badge::after { content: "✦"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 1.9rem; color: var(--ink); }
+
 /* ===== gate ===== */
 #gateSection { display: block; }
 .gate-wrap {
@@ -219,6 +228,8 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 /* ===== responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
+  .hero-art { max-width: 320px; }
+  .badge { right: -2%; }
   .premium-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 760px) {
@@ -291,7 +302,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       <div class="hero-copy">
         <div class="eyebrow" data-enter style="--d:100"><i class="pulse"></i> Premium</div>
         <h1 id="premium-title" data-enter style="--d:220">The good stuff, <span class="hl">unlocked.</span></h1>
-        <p data-enter style="--d:360">Exclusive notes, past papers and insider resources — reserved for premium members. Enter the code to open the vault.</p>
+        <p id="heroCopy" data-enter style="--d:360">Exclusive notes, past papers and insider resources — reserved for premium members. Enter the code to open the vault.</p>
       </div>
       <div class="hero-art" data-enter style="--d:260">
         <img src="assets/college.png" alt="">
@@ -416,6 +427,9 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   function showVault(){
     if(document.getElementById('premiumVault').dataset.loaded) return;
     document.getElementById('premiumVault').dataset.loaded = '1';
+
+    var hc = document.getElementById('heroCopy');
+    if(hc) hc.textContent = "You're in. Exclusive notes, past papers and insider resources are below.";
 
     // Hide the gate immediately
     var gateSection = document.getElementById('gateSection');
