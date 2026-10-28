@@ -1,0 +1,157 @@
+{
+  "physics": {
+    "name": "Physics",
+    "description": "for engineering",
+    "icon": "assets/icons/physics.svg",
+    "resources": [
+     {
+        "heading": "Module 1",
+        "description": "theory",
+        "link": "assets/Module 1 AY 2026-27.pdf"
+      },
+      {
+        "heading": "Module 1 numericals",
+        "description": "important questions with solns",
+        "link": "assets/m1imp_with_additional_quantum_numericals.pdf"
+      },
+      {
+        "heading": "Quantum Mechanics",
+        "description": "Master formula sheet",
+        "link": "DOC-20260925-WA0000.pdf"
+      },
+      {
+        "heading": "More about Stefan Boltzmann Law (lab 4th exp)",
+        "description": "Not recommended(if you dont have interest)",
+        "link": "assets/Physics Galaxy - Thermodynamics, Oscillation & Waves (dragged).pdf"
+      }
+    ]
+  },
+  "electronics": {
+    "name": "Electronics",
+    "description": "........",
+    "icon": "assets/icons/electronics.svg",
+    "resources": [
+      {
+        "heading": "Question Bank",
+        "description": "Important Questions",
+        "link": "assets/ecqbank.pdf"
+      },
+      {
+        "heading": "Module 1",
+        "description": "Semiconductors",
+        "link": "assets/ecmodule1.pdf"
+      },
+      {
+        "heading": "Module 2",
+        "description": "Transistors",
+        "link": "assets/ecmodule2.pdf"
+      }
+    ]
+  },
+  "maths": {
+    "name": "Maths",
+    "description": "Notes of Modules",
+    "icon": "assets/icons/maths.svg",
+    "resources": [
+      {
+        "heading": "Module 1",
+        "description": "question bank",
+        "link": "assets/matm1.pdf"
+      },
+      {
+        "heading": "Module 2",
+        "description": "question bank",
+        "link": "assets/matm2.pdf"
+      },
+      {
+        "heading": "Complete Module 1",
+        "description": "comprehensive notes",
+        "link": "Linear_Algebra_Notes_Updated.pdf"
+      }
+    ]
+  },
+  "programming": {
+    "name": "Programming",
+    "description": "coming soon",
+    "icon": "assets/icons/programming.svg",
+    "resources": [
+      {
+        "heading": "lab 4,5,6",
+        "description": "4,5,6 respectively",
+        "link": "assets/lab456.pdf"
+      },
+      {
+        "heading": "Front Page",
+        "description": "tool",
+        "link": "assets/frontpage.html"
+      },
+      {
+        "heading": "Module 1",
+        "description": "Intoduction to python program",
+        "link": "assets/pym1.pdf"
+      },
+      {
+        "heading": "Assignment 1",
+        "description": "solutions | ai generated(verify once)",
+        "link": "assets/Python_Assignment1_90_Answers.pdf"
+      }
+    ]
+  },
+  "special": {
+    "name": "Special",
+    "description": "Coming soon.",
+    "icon": "assets/icons/special.svg",
+    "enabled": false,
+    "resources": []
+  },
+  "AI": {
+    "name": "AI",
+    "description": "hm..",
+    "icon": "assets/icons/ai.svg",
+    "resources": [
+      {
+        "heading": "Syllabus",
+        "description": "AI and its applications",
+        "link": "assets/AI/Syllabus.pdf"
+      },
+      {
+        "heading": "Lesson plans",
+        "description": "AI and its applications",
+        "link": "assets/AI/Lessonplan.pdf"
+      },
+      {
+        "heading": "Module 1",
+        "description": "introduction to AI",
+        "link": "assets/AI/Module 1.pdf"
+      }
+    ]
+  },
+  "kannada": {
+  "name": "Kannada",
+  "description": "Notes, PDFs and videos for Kannada.",
+  "icon": "assets/icons/kannada.svg",
+  "enabled": true,
+  "resources": [
+    {
+    "heading": "test topic solutions",
+        "description": "may be useful",
+        "link": "assets/cietksk.pdf"
+    },
+    {
+    "heading": "test topic",
+        "description": "for cie",
+        "link": "assets/kskimpt.pdf"
+    },
+    {
+    "heading": "Module 1",
+        "description": "notes",
+        "link": "assets/module1ksk.pdf"
+    },
+    {
+    "heading": "Module 2",
+        "description": "notes",
+        "link": "assets/module2ksk.pdf"
+    }
+  ]
+  }
+}
