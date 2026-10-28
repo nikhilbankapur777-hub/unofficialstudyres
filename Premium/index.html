@@ -451,11 +451,6 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       premiumContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function hidePremium(){
-      gateSection.style.display = '';
-      premiumContent.classList.remove('unlocked');
-    }
-
     // Check existing unlock state on load
     function checkExisting(){
       if(window.Premium && Premium.isUnlocked()){
@@ -509,6 +504,27 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       gateSection.style.display = 'none';
       premiumContent.classList.add('unlocked');
     }
+  })();
+
+  /* =================================================================
+     OPTIONAL: load subjects from assets/subjects1.json (fallback subjects1.json)
+     — path kept exactly as required. Only runs if a container exists.
+     ================================================================= */
+  (function(){
+    var grid = document.getElementById('subjectGrid');
+    if(!grid) return;  // no subject grid on this page — skip
+
+    function fetchJson(paths){
+      var path = paths[0];
+      return fetch(path).then(function(res){ if(!res.ok) throw new Error('not ok'); return res.json(); })
+        .catch(function(){ if(paths.length > 1) return fetchJson(paths.slice(1)); throw new Error('not ok'); });
+    }
+
+    fetchJson(['assets/subjects1.json', 'subjects1.json']).then(function(data){
+      window.subjectsData = data;
+    }).catch(function(){
+      // silent on premium page
+    });
   })();
 </script>
 </body>
