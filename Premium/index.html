@@ -279,20 +279,20 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 
 <div class="shell">
   <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">S</span>study resources</a>
+    <a class="brand" href="../index.html"><span class="brand-mark">S</span>study resources</a>
     <nav class="nav" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="index.html#subjects">Subjects</a>
-      <a href="index.html#tools">Tools</a>
-      <a href="premium.html" aria-current="true">Premium ✦</a>
+      <a href="../index.html">Home</a>
+      <a href="../index.html#subjects">Subjects</a>
+      <a href="../index.html#tools">Tools</a>
+      <a href="./" aria-current="true">Premium ✦</a>
     </nav>
-    <button class="icon-button" aria-label="Search"><img class="svg" src="assets/icons/search.svg" alt=""></button>
+    <button class="icon-button" aria-label="Search"><img class="svg" src="../assets/icons/search.svg" alt=""></button>
     <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
     <nav class="menu" id="menu" aria-label="Mobile navigation">
-      <a href="index.html">Home</a>
-      <a href="index.html#subjects">Subjects</a>
-      <a href="index.html#tools">Tools</a>
-      <a href="premium.html" class="on">Premium ✦</a>
+      <a href="../index.html">Home</a>
+      <a href="../index.html#subjects">Subjects</a>
+      <a href="../index.html#tools">Tools</a>
+      <a href="./" class="on">Premium ✦</a>
     </nav>
   </header>
 
@@ -305,7 +305,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
         <p id="heroCopy" data-enter style="--d:360">Exclusive notes, past papers and insider resources — reserved for premium members. Enter the code to open the vault.</p>
       </div>
       <div class="hero-art" data-enter style="--d:260">
-        <img src="assets/college.png" alt="">
+        <img src="../assets/college.png" alt="">
         <div class="badge" aria-hidden="true">
           <svg viewBox="0 0 200 200"><defs><path id="ring" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
             <text><textPath href="#ring" textLength="470" lengthAdjust="spacing">notes ✦ pdfs ✦ videos ✦ notes ✦ pdfs ✦ videos ✦</textPath></text></svg>
@@ -335,7 +335,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
   </footer>
 </div>
 
-<script src="gate.js"></script>
+<script src="../gate.js"></script>
 <script>
   /* ---------- entry sequence ---------- */
   (function(){
@@ -396,6 +396,9 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
 
   function escapeHtml(str){ var d = document.createElement('div'); d.innerText = str == null ? '' : str; return d.innerHTML; }
 
+  /* this page lives in /premium, so root-relative paths from the JSON need ../ */
+  function fixPath(u){ return /^(https?:|\/|#|data:|\.\.\/)/i.test(u) ? u : '../' + u; }
+
   function renderVault(subjects){
     var order = SUBJECT_ORDER.filter(function(k){ return subjects[k]; });
     // include any extra keys not in the known order
@@ -406,14 +409,14 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       if(!s) return '';
       var enabled = s.enabled !== false;
       var classes = 'premium-card reveal' + (enabled ? '' : ' disabled');
-      var icon = s.icon ? '<img class="svg" src="' + escapeHtml(s.icon) + '" alt="" style="width:26px;height:26px;filter:invert(1)">' : '✦';
+      var icon = s.icon ? '<img class="svg" src="' + escapeHtml(fixPath(s.icon)) + '" alt="" style="width:26px;height:26px;filter:invert(1)">' : '✦';
       var tag = enabled ? 'Open' : 'Coming soon';
       var inner = '<span class="card-icon">' + icon + '</span>' +
                   '<h3>' + escapeHtml(s.name || key) + '</h3>' +
                   '<p>' + escapeHtml(s.description || '') + '</p>' +
                   '<span class="card-go"><b>' + tag + ' <span>→</span></b></span>';
       if(enabled){
-        return '<a class="' + classes + '" href="subject.html?subject=' + encodeURIComponent(key) + '&premium=1">' + inner + '</a>';
+        return '<a class="' + classes + '" href="../subject.html?subject=' + encodeURIComponent(key) + '&premium=1">' + inner + '</a>';
       }
       return '<div class="' + classes + '" aria-disabled="true" style="opacity:.62;cursor:not-allowed">' + inner + '</div>';
     }).join('');
@@ -436,7 +439,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
     if(gateSection) gateSection.style.display = 'none';
 
     // Now fetch the PREMIUM data file (subjects1.json) — not a fallback, it IS the premium content
-    fetch('assets/subjects1.json')
+    fetch('../assets/subjects1.json')
       .then(function(res){
         if(!res.ok) throw new Error('premium data not ok');
         return res.json();
