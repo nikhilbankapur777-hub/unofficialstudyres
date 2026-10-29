@@ -409,7 +409,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; font-varia
       if(!s) return '';
       var enabled = s.enabled !== false;
       var classes = 'premium-card reveal' + (enabled ? '' : ' disabled');
-      var icon = s.icon ? '<img class="svg" src="' + escapeHtml(fixPath(s.icon)) + '" alt="" style="width:26px;height:26px;filter:invert(1)">' : '✦';
+      var icon = s.icon ? '<img class="svg" src="' + escapeHtml(fixPath(s.icon)) + '" alt="" style="width:26px;height:26px">' : '✦';
       var tag = enabled ? 'Open' : 'Coming soon';
       var inner = '<span class="card-icon">' + icon + '</span>' +
                   '<h3>' + escapeHtml(s.name || key) + '</h3>' +
