@@ -109,6 +109,11 @@
     "description": "hm..",
     "icon": "assets/icons/ai.svg",
     "resources": [
+     {
+        "heading": "Module 2",
+        "description": "Introduction to Prompt Engineering",
+        "link": "assets/AI/Module 2.pdf"
+      },
       {
         "heading": "Syllabus",
         "description": "AI and its applications",
