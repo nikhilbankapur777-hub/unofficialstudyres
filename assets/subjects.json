@@ -5,6 +5,16 @@
     "icon": "assets/icons/physics.svg",
     "resources": [
      {
+        "heading": "Module 3",
+        "description": "theory",
+        "link": "assets/pymodule3.pdf"
+      },
+      {
+        "heading": "Module 2",
+        "description": "theory",
+        "link": "assets/pymodule2.pdf"
+      },
+      {
         "heading": "Module 1",
         "description": "theory",
         "link": "assets/Module 1 AY 2026-27.pdf"
