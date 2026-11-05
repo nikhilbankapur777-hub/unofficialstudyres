@@ -120,6 +120,11 @@
     "icon": "assets/icons/ai.svg",
     "resources": [
      {
+        "heading": "Module 3",
+        "description": "Prompt Engineering techniques for chatgpt",
+        "link": "assets/Module 3.pdf"
+      },
+      {
         "heading": "Module 2",
         "description": "Introduction to Prompt Engineering",
         "link": "assets/AI/Module 2.pdf"
